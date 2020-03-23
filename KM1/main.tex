@@ -30,13 +30,7 @@
 
 % Źródłem danych będą popularne strony z memami takie jak reddit oraz 9gag. Finalnym produktem będzie strona internetowa, na której oprócz dashbordu z analizami dostępny będzie stream najlepszych memów wraz z podziałem na kategorie.
 
-Memelysis - Website for memes analysis, with respect to:
-\begin{enumerate}
-    \item Themes analysis
-    \item Memes' format analysis
-\end{enumerate}
-
-Data sources will consist of: 9gag, Reddit, Twitter, Memedroid.
+Memelysis - Website for memes analysis, with respect to themes and formats and a place to find your favourite meme. Data sources will consist of: 9GAG, Reddit, Twitter, Memedroid.
 
 
 % Planowane korzyści z punktu widzenia odbiorcy tworzonego
@@ -56,18 +50,17 @@ Finally, with the statistical analysis provided, users might examine current tre
 % i wielkości zbiorów danych, jakie będą podlegać przetworzeniu
 \section{Data}
 \subsection{Data Sources}
-\subsubsection{9gag.com}
-"9GAG is a Hong Kong–based online platform and social media website, which allows its users to upload and share "user-generated content" or other content from external social media websites. It was launched on July 1, 2008." \footnote{https://en.wikipedia.org/wiki/9GAG}. 
+\subsubsection{9GAG}
+"9GAG is a Hong Kong–based online platform and social media website, which allows its users to upload and share "user-generated content" or other content from external social media websites. It was launched on July 1, 2008." \footnote{https://en.wikipedia.org/wiki/9GAG}. Currently it is used by more than 200 million users a month.
 
 
-\subsubsection{twitter.com}
+\subsubsection{Twitter}
 Twitter is an American microblogging and social networking service on which users post and interact with messages known as "tweets". Twitter was launched in July 2006. The service rapidly gained worldwide popularity. In 2012, more than 100 million users posted 340 million tweets a day. Users can group posts together by topic or type by use of hashtags – words or phrases prefixed with a “\#” sign. Tweets include also a functionality of attaching an image.
 
-\subsubsection{reddit.com}
+\subsubsection{Reddit}
 
-\subsubsection{memedroid.com}
-Memedroid is a popular website offering memes on similar basis like 9Gag.
-The main difference is that the content is mostly based on the situations in United States America. 
+\subsubsection{Memedroid}
+Memedroid is also a website for user-generated content. It might be not as popular nowadays as it used to be in the past, however it still possesses its main feature, which is the ability to easily create your own memes and share them among others. Therefore Memedroid contains dozens of themes, formats which will be highly demanded while clustering, where variety of content improves the algorithm accuracy. 
 
 \subsection{Data collecting}
 %Image, titles, url, some rank 
@@ -150,7 +143,7 @@ The task to be performed within this project are:
          \hline
          Project Management & & & & \Checkmark \\
          Human Resources & & &\Checkmark & \\
-         Data collecting & 9gag & Twitter & Memedroid, 9gag & Reddit \\
+         Data collecting & 9GAG & Twitter & Memedroid, 9GAG & Reddit \\
          Cloud initialization & \Checkmark & \Checkmark & \Checkmark & \Checkmark \\
          Apache NiFi, HDFS & \Checkmark & & \Checkmark &\\
          Google Dataflow & & \Checkmark & & \Checkmark \\
