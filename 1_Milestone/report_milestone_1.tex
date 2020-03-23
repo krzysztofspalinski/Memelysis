@@ -1,9 +1,8 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage{english}
 \usepackage{footnote}
 \usepackage{graphicx}
-\usepackage{bbding}
+\usepackage{amssymb}
 \usepackage{pifont}
 
 \setlength{\parskip}{1em}
@@ -72,10 +71,10 @@ Besides memes themselves: tags, titles, urls and the popularity indicators will 
 \begin{table}[]
 \begin{tabular}{lccccc}
           & \textbf{Title}  & \textbf{Image}  & \textbf{Url}    & \textbf{Rating}                     & \textbf{Tags}   \\ \hline
-Reddit    & \Checkmark & \Checkmark & \Checkmark & Vote count and upvote rate & \XSolidBrush \\
-9gag      & \Checkmark & \Checkmark & \Checkmark & Upvote count               & \Checkmark \\
-Memedroid & \Checkmark & \Checkmark & \Checkmark & Likeability percentage   & \Checkmark      \\
-Twitter   & \Checkmark & \Checkmark & \Checkmark & Likes                      & \Checkmark
+Reddit    & \checkmark & \checkmark & \checkmark & Vote count and upvote rate & \ding{55} \\
+9gag      & \checkmark & \checkmark & \checkmark & Upvote count               & \checkmark \\
+Memedroid & \checkmark & \checkmark & \checkmark & Likeability percentage   & \checkmark      \\
+Twitter   & \checkmark & \checkmark & \checkmark & Likes                      & \checkmark
 \end{tabular}
 \caption{Sources content}
 \end{table}
@@ -83,13 +82,22 @@ Twitter   & \Checkmark & \Checkmark & \Checkmark & Likes                      & 
 % Kluczowe założenia architektoniczne, w tym planowana lista
 % środowisk Big Data przewidzianych do wykorzystania
 % w projekcie
+\newpage
+
+$\phantom{.}$
+
+\newpage
 \section{Architecture and tech stack}
 \subsection{Architecture}
 %obrazek Krzysztofa
-\begin{center}
-\includegraphics[scale = 0.50]{image.png}
-\caption{'Project architecture'}
-\end{center}
+
+	\begin{figure}[!h]
+	\centering
+		\includegraphics[scale = 0.55]{architecture.png}
+		\caption{Project architecture}
+	\end{figure}
+
+\newpage
 \subsection{Tools}
 %używane technologię
 \begin{itemize}
@@ -137,22 +145,22 @@ The main task to be covered is to label each meme based on its content and forma
 The task to be performed within this project are:
 
 \def\arraystretch{1.5}%
-\begin{table}[]
+\begin{table}[!h]
     \centering
     \begin{tabular}{lcccc}
          Task & Michał & Jakub & Maciej & Krzysztof \\
          \hline
-         Project Management & & & & \Checkmark \\
-         Human Resources & & &\Checkmark & \\
+         Project Management & & & & \checkmark \\
+         Human Resources & & &\checkmark & \\
          Data collecting & 9GAG & Twitter & Memedroid, 9GAG & Reddit \\
-         Cloud initialization & \Checkmark & \Checkmark & \Checkmark & \Checkmark \\
-         Apache NiFi, HDFS & \Checkmark & & \Checkmark &\\
-         Google Dataflow & & \Checkmark & & \Checkmark \\
-         Data Preprocessing & & & \Checkmark & \\
-         Unit tests & \Checkmark & \Checkmark& \Checkmark & \Checkmark \\
-         Advanced Analytics & \Checkmark & \Checkmark & \Checkmark & \Checkmark  \\
-         Final Webapp & \Checkmark & & & \\
-         Data Visualization & & &  & \Checkmark \\
+         Cloud initialization & \checkmark & \checkmark & \checkmark & \checkmark \\
+         Apache NiFi, HDFS & \checkmark & & \checkmark &\\
+         Google Dataflow & & \checkmark & & \checkmark \\
+         Data Preprocessing & & & \checkmark & \\
+         Unit tests & \checkmark & \checkmark& \checkmark & \checkmark \\
+         Advanced Analytics & \checkmark & \checkmark & \checkmark & \checkmark  \\
+         Final Webapp & \checkmark & & & \\
+         Data Visualization & & &  & \checkmark \\
          
     \end{tabular}
     \caption{Tasks distribution}
