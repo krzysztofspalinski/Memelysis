@@ -1,12 +1,14 @@
 import tweepy
 import os
 import datetime
+from tqdm import tqdm
 
 class TwitterCollector:
     """
     Class collects Tweets containing images via Twitter API
     Tweepy doc: http://docs.tweepy.org/en/latest/api.html
     """
+
     def __init__(self,
                  consumer_key,
                  consumer_secret,
@@ -47,12 +49,11 @@ class TwitterCollector:
         :param count: 
         :return: tweepy.Cursor object
         """
-        #TODO: time range instead of date range
+        # TODO: time range instead of date range
 
         return tweepy.Cursor(self.api.search,
                              q="#{} since:{} until:{}".format(hashtag, since, until),
                              count=count,
-                             since=since,
                              lang='en'
                              )
 
@@ -82,30 +83,35 @@ class TwitterCollector:
             os.makedirs(data_path)
 
         # creating output file
-        output_file = data_path + hashtag + "_" + since + "_" + until + "_" + str(datetime.datetime.today().strftime("%Y_%m_%d_%H_%M_%S"))+".json"
+        output_file = data_path + hashtag + "_" + since + "_" + until + "_" + str(
+            datetime.datetime.today().strftime("%Y_%m_%d_%H_%M_%S")) + ".json"
         print("Creating {}...".format(output_file))
         open(output_file, 'a').close()
 
         # save tweets that contain media files
         # TODO: check if we deal with image/video
         print("Saving tweets...")
-        for tweet in tweets.items():
+        for tweet in tqdm(tweets.items()):
+            #TODO: catch tweepy.TweepError
             if tweet.entities.get('media', None) is not None:
-                tweet_json = {"id" : tweet.id,
-                              "text" : tweet.text,
-                              "favorite_count" : tweet.favorite_count,
-                              "hashtags" : tweet.entities['hashtags'],
-                              "media" : tweet.entities['media']}
+                tweet_json = {"id": tweet.id,
+                              "text": tweet.text,
+                              "favorite_count": tweet.favorite_count,
+                              "hashtags": tweet.entities['hashtags'],
+                              "media": tweet.entities['media']}
                 with open(output_file, 'a') as file:
-                    file.write(str(tweet_json))
+                    file.write(str(tweet_json) + "\n")
 
         print("Done!")
-        return
+        return output_file
 
-    #TODO: API trend methods
+    # TODO: API trend methods
+
 
 def main():
+
     pass
+
 
 if __name__ == "__main__":
     main()
