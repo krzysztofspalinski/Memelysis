@@ -61,29 +61,5 @@ class DataCollector:
 def main ():
     pass
 
-
-
 if __name__ == "__main__":
     main()
-
-    from scrappers.twitter.twittercollector import TwitterCollector
-
-
-    def main():
-        ACCESS_TOKEN = '1239665309491048453-3eHz4SiYPMCEL2lVVVDCTz8LDA9JmF'
-        ACCESS_SECRET = 'aCCAkQ9twiQTLwGVDqb0POzUIM5ODKEWv2vfE6yuqbKlF'
-        CONSUMER_KEY = 'BpCtjXyHE3lvmgHWbbTZzbvtx'
-        CONSUMER_SECRET = '22vKmW2QRLeEgxbBvUHVFAusPu8aQi3JUaUbirkjllAGzmvWIS'
-
-        tc = TwitterCollector(CONSUMER_KEY,
-                              CONSUMER_SECRET,
-                              ACCESS_TOKEN,
-                              ACCESS_SECRET)
-        tc.save_tweets_with_media("bigdata",
-                                  "2020-03-28",
-                                  "2020-03-29",
-                                  "./scrappers/twitter/mass-storage/")
-
-
-    if __name__ == "__main__":
-        main()
