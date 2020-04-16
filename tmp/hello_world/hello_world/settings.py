@@ -25,7 +25,7 @@ SECRET_KEY = 'qbjkb^_9m*lg!$l*89un=85$pr^hxpnx5nv@oy0+&4d!#mz+70'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['gcp-testing-274413.ue.r.appspot.com']
 
 
 # Application definition
