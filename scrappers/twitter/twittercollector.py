@@ -2,6 +2,7 @@ import tweepy
 import os
 import datetime
 from tqdm import tqdm
+import urllib
 
 class TwitterCollector:
     """
@@ -59,51 +60,96 @@ class TwitterCollector:
 
     def save_tweets_with_media(self,
                                hashtag,
-                               since,
-                               until,
-                               data_path,
+                               execution_time,
+                               lag,
+                               directory,
                                count=None):
         """
         Saving tweets from given hashtag containing media to a JSON file
         :param hashtag:
-        :param since:
-        :param until:
-        :param data_path:
+        :param execution_time: date format: '%Y-%m-%d %H:%M:%S'
+        :param lag: difference between  execution time and tweets collection time (in hours)
+        :param directory:
         :param count:
         :return:
         """
 
+        # time range tweets are being collected
+        execution_time = datetime.datetime.strptime(execution_time, '%Y-%m-%d %H:%M:%S')
+        start = execution_time - datetime.timedelta(hours = -lag)
+        end = execution_time - datetime.timedelta(hours = (-lag + 1))
+
+        since = start.date()
+        until = since + datetime.timedelta(days=1)
+
+        print(start)
+        print(end)
+        print(since)
+        print(until)
         tweets = self._get_hashtag_tweets(hashtag, since, until, count)
 
-        # check if data_path exists
-        if os.path.exists(data_path):
-            print("Directory {} already exists!".format(data_path))
+        # check if directory exists
+        if os.path.exists(directory):
+            raise Exception("Directory {} already exists!".format(directory))
         else:
-            print("Directory {} does not exist! Creating directory...".format(data_path))
-            os.makedirs(data_path)
+            print("Directory {} does not exist! Creating directory...".format(directory))
+            os.makedirs(directory)
+            storage_dir = directory + "/" + "twitter" + hashtag + "_" + str(int(execution_time.timestamp()))
+            os.makedirs(storage_dir + "/")
 
         # creating output file
-        output_file = data_path + hashtag + "_" + since + "_" + until + "_" + str(
-            datetime.datetime.today().strftime("%Y_%m_%d_%H_%M_%S")) + ".json"
+        output_file = directory + "twitter" + hashtag + "_" + str(int(execution_time.timestamp())) + ".json"
         print("Creating {}...".format(output_file))
         open(output_file, 'a').close()
 
         # save tweets that contain media files
-        # TODO: check if we deal with image/video
         print("Saving tweets...")
-        for tweet in tqdm(tweets.items()):
-            #TODO: catch tweepy.TweepError
-            if tweet.entities.get('media', None) is not None:
-                tweet_json = {"id": tweet.id,
-                              "text": tweet.text,
-                              "favorite_count": tweet.favorite_count,
-                              "hashtags": tweet.entities['hashtags'],
-                              "media": tweet.entities['media']}
-                with open(output_file, 'a') as file:
-                    file.write(str(tweet_json) + "\n")
+        TweepErrorReached = False
 
-        print("Done!")
-        return output_file
+        for tweet in tqdm(tweets.items()):
+            try:
+                if tweet.entities.get('media', None) is not None and \
+                    tweet.created_at >= start and tweet.created_at <= end:
+                    # TODO: check if we deal with image/video
+                    tweet_json = {"id": tweet.id,
+                                  "text": tweet.text,
+                                  "favorite_count": tweet.favorite_count,
+                                  "hashtags": tweet.entities['hashtags'],
+                                  "media": tweet.entities['media']}
+
+                    try:
+                        urllib.urlretrieve(tweet_json.media.media_url, storage_dir + "/" + tweet_json.id)
+                    except:
+                        print("Cannot download image {}".format())
+                    with open(output_file, 'a') as file:
+                        file.write(str(tweet_json) + "\n")
+
+            except tweepy.TweepError:
+                TweepErrorReached = True
+                break
+
+
+        # Creating log
+        log = {"output_file": output_file,
+               "run": str(execution_time),
+               "start" : str(start),
+               "end" : str(end),
+               "linecount" : sum(1 for line in open(output_file)),
+               "TweepErrorReached" : TweepErrorReached}
+
+        # check if log file exists
+        log_file = directory + "twitter_" + hashtag + "_" + str(int(execution_time.timestamp())) + ".txt"
+
+        if os.path.exists(log_file):
+            raise Exception("File {} already exists!".format(log_file))
+        else:
+            open(log_file, 'a').close()
+
+        # append to log
+        with open(log_file, 'a') as file:
+            file.write(str(log) + "\n")
+
+        return True
 
     # TODO: API trend methods
 
