@@ -12,7 +12,8 @@ def obtain_data_from_imgur(
         end_timestamp=None,
         sort="time",
         page=0,
-        window="day"):
+        window="day",
+        temporary=False):
     """Obtains posts from imgur.com
 
     Args:
@@ -41,6 +42,11 @@ def obtain_data_from_imgur(
 
     date_hour_now = datetime.datetime.now().strftime("%Y%m%d%H")
     date_hour_nice = datetime.datetime.utcnow().strftime('%Y %m %d, %H:%M')
+
+    if temporary is True:
+        container_path = os.path.join(sys.path[0], "tmp")
+    else:
+        container_path = os.path.join(sys.path[0])
 
     # Obtain post list
 
@@ -78,7 +84,7 @@ def obtain_data_from_imgur(
 
     # Save images in imgur dictionary
 
-    imgur_dir = os.path.join(sys.path[0], "imgur")
+    imgur_dir = os.path.join(container_path, "imgur")
 
     if not os.path.exists(imgur_dir):
         os.makedirs(imgur_dir)
@@ -125,18 +131,18 @@ def obtain_data_from_imgur(
 
     # Save json file
 
-    json_path = os.path.join(sys.path[0], f'imgur_{date_hour_now}.json')
+    json_path = os.path.join(container_path, f'imgur_{date_hour_now}.json')
     with open(json_path, 'w') as file_:
         file_.write(json.dumps(images, indent=1))
 
     # Save log file
 
-    log_path = os.path.join(sys.path[0], f'imgur_{date_hour_now}.txt')
+    log_path = os.path.join(container_path, f'imgur_{date_hour_now}.txt')
     log = "\n".join(log)
     with open(log_path, 'w') as file_:
         file_.write(log)
 
-    return posts
+    return images
 
 
 def main():
