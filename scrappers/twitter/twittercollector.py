@@ -3,6 +3,7 @@ import os
 import datetime
 from tqdm import tqdm
 from urllib.request import urlretrieve
+import json
 
 class TwitterCollector:
     """
@@ -89,17 +90,18 @@ class TwitterCollector:
         else:
             print("Directory {} does not exist! Creating directory...".format(directory))
             os.makedirs(directory)
-            storage_dir = directory + "twitter" + hashtag + "_" + str(int(execution_time.timestamp())) + "/"
+            storage_dir = directory + "twitter_" + hashtag + "_" + str(int(execution_time.timestamp())) + "/"
             os.makedirs(storage_dir)
 
         # creating output file
-        output_file = directory + "twitter" + hashtag + "_" + str(int(execution_time.timestamp())) + ".json"
+        output_file = directory + "twitter_" + hashtag + "_" + str(int(execution_time.timestamp())) + ".json"
         print("Creating {}...".format(output_file))
         open(output_file, 'a').close()
 
         # save tweets that contain media files
         print("Saving tweets...")
         TweepErrorReached = False
+        meme_counter = 0
 
         try:
             for tweet in tqdm(tweets.items()):
@@ -109,7 +111,7 @@ class TwitterCollector:
                         tweet_json = {"url": tweet.entities['media'][0]['media_url'],
                                       "additional_data": {
                                           "id": tweet.id,
-                                          "created_at": tweet.created_at,
+                                          "created_at": str(tweet.created_at),
                                           "text": tweet.text,
                                           "favorite_count": tweet.favorite_count,
                                           "retweet_count": tweet.retweet_count,
@@ -118,11 +120,12 @@ class TwitterCollector:
 
                         try:
                             urlretrieve(tweet_json['url'], storage_dir + str(tweet_json['additional_data']['id']))
+                            meme_counter += 1
                         except:
                             print("Cannot download image {}".format(tweet_json['url']))
 
-                        with open(output_file, 'a') as file:
-                            file.write(str(tweet_json) + "\n")
+                        with open(output_file, 'a') as outfile:
+                            json.dump(tweet_json, outfile, indent=1)
 
         except tweepy.TweepError:
             TweepErrorReached = True
@@ -134,7 +137,7 @@ class TwitterCollector:
                "run": str(execution_time),
                "start" : str(start),
                "end" : str(end),
-               "linecount" : sum(1 for line in open(output_file)),
+               "linecount" : meme_counter,
                "TweepErrorReached" : TweepErrorReached}
 
         # check if log file exists
@@ -146,8 +149,8 @@ class TwitterCollector:
             open(log_file, 'a').close()
 
         # append to log
-        with open(log_file, 'a') as file:
-            file.write(str(log) + "\n")
+        with open(log_file, 'a') as outfile:
+            json.dump(log, outfile, indent=1)
 
         return True
 
