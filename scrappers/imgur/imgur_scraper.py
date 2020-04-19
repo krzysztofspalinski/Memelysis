@@ -58,9 +58,12 @@ def obtain_data_from_imgur(
             try:
                 url = f'https://api.imgur.com/3/g/memes/{sort}/{window}/{page}'
                 response = requests.get(url, headers=headers)
-                posts = [post for post in response.json().get('data', []) if start_timestamp <= post["datetime"] < end_timestamp]
+                posts = [post for post in response.json().get(
+                    'data', []) if start_timestamp <= post["datetime"] < end_timestamp]
                 break
             except requests.exceptions.ConnectionError:
+                attempts += 1
+            except TypeError:
                 attempts += 1
     else:
         while True:
@@ -71,15 +74,19 @@ def obtain_data_from_imgur(
                 try:
                     url = f'https://api.imgur.com/3/g/memes/{sort}/{window}/{page}'
                     response = requests.get(url, headers=headers)
-                    more_posts = [post for post in response.json().get('data', []) if start_timestamp <= post["datetime"] < end_timestamp]
+                    more_posts = [post for post in response.json().get(
+                        'data', []) if start_timestamp <= post["datetime"] < end_timestamp]
                     posts.extend(more_posts)
                     break
                 except requests.exceptions.ConnectionError:
                     attempts += 1
+                except TypeError:
+                    attempts += 1
             if len(more_posts) < 60:
                 break
 
-    posts = [post for post in posts if all("image" in image.get("type", '') for image in post.get('images', []))]
+    posts = [post for post in posts if all("image" in image.get(
+        "type", '') for image in post.get('images', []))]
     log.append(f'Found {len(posts)} memes to download.')
 
     # Save images in imgur dictionary
@@ -99,7 +106,8 @@ def obtain_data_from_imgur(
             "date": post_date,
             "title": post_title
         }
-        post_additional_data.update({k: v for k, v in post.items() if k not in ["datetime", "title"]})
+        post_additional_data.update(
+            {k: v for k, v in post.items() if k not in ["datetime", "title"]})
         for image in post.get("images", []):
 
             post_timestamp = post_date
