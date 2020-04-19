@@ -2,7 +2,7 @@ import tweepy
 import os
 import datetime
 from tqdm import tqdm
-import urllib
+from urllib.request import urlretrieve
 
 class TwitterCollector:
     """
@@ -76,8 +76,8 @@ class TwitterCollector:
 
         # time range tweets are being collected
         execution_time = datetime.datetime.strptime(execution_time, '%Y-%m-%d %H:%M:%S')
-        start = execution_time - datetime.timedelta(hours = -lag)
-        end = execution_time - datetime.timedelta(hours = (-lag + 1))
+        start = execution_time + datetime.timedelta(hours = -lag)
+        end = execution_time + datetime.timedelta(hours = (-lag + 1))
 
         since = start.date()
         until = since + datetime.timedelta(days=1)
@@ -94,8 +94,8 @@ class TwitterCollector:
         else:
             print("Directory {} does not exist! Creating directory...".format(directory))
             os.makedirs(directory)
-            storage_dir = directory + "/" + "twitter" + hashtag + "_" + str(int(execution_time.timestamp()))
-            os.makedirs(storage_dir + "/")
+            storage_dir = directory + "twitter" + hashtag + "_" + str(int(execution_time.timestamp())) + "/"
+            os.makedirs(storage_dir)
 
         # creating output file
         output_file = directory + "twitter" + hashtag + "_" + str(int(execution_time.timestamp())) + ".json"
@@ -106,29 +106,30 @@ class TwitterCollector:
         print("Saving tweets...")
         TweepErrorReached = False
 
-        for tweet in tqdm(tweets.items()):
-            try:
-                if tweet.entities.get('media', None) is not None and \
-                    tweet.created_at >= start and tweet.created_at <= end:
-                    # TODO: check if we deal with image/video
-                    tweet_json = {"id": tweet.id,
-                                  "text": tweet.text,
-                                  "favorite_count": tweet.favorite_count,
-                                  "hashtags": tweet.entities['hashtags'],
-                                  "media": tweet.entities['media']}
+        try:
+            for tweet in tqdm(tweets.items()):
+                    if tweet.entities.get('media', None) is not None and \
+                        tweet.created_at >= start and tweet.created_at <= end:
+                        # TODO: check if we deal with image/video
+                        tweet_json = {"id" : tweet.id,
+                                      "created_at" : tweet.created_at,
+                                      "text" : tweet.text,
+                                      "favorite_count" : tweet.favorite_count,
+                                      "hashtags" : tweet.entities['hashtags'],
+                                      "media" : tweet.entities['media'][0]}
+                        try:
+                            urlretrieve(tweet_json['media']['media_url'], storage_dir + str(tweet_json['id']))
+                        except:
+                            print("Cannot download image {}".format(tweet_json['media']['media_url']))
 
-                    try:
-                        urllib.urlretrieve(tweet_json.media.media_url, storage_dir + "/" + tweet_json.id)
-                    except:
-                        print("Cannot download image {}".format())
-                    with open(output_file, 'a') as file:
-                        file.write(str(tweet_json) + "\n")
+                        with open(output_file, 'a') as file:
+                            file.write(str(tweet_json) + "\n")
 
-            except tweepy.TweepError:
-                TweepErrorReached = True
-                break
+        except tweepy.TweepError:
+            TweepErrorReached = True
 
-
+        if TweepErrorReached: print("Tweep error reached!")
+        
         # Creating log
         log = {"output_file": output_file,
                "run": str(execution_time),
