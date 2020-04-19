@@ -85,9 +85,8 @@ class TestMemedroid(unittest.TestCase):
         self.assertNotEqual(len(self.obj1.memes), 0)
 
     def test_extract_data(self):
-        start = datetime.strptime('2020-04-18 00:00:00', '%Y-%m-%d %H:%M:%S')
-        end = datetime.strptime('2020-04-19 00:00:00', '%Y-%m-%d %H:%M:%S')
-        self.assertRaises(TypeError, self.obj1.extract_data('2020', end))
+        start = datetime.timestamp(datetime.strptime('2020-04-18 00:00:00', '%Y-%m-%d %H:%M:%S'))
+        end = datetime.timestamp(datetime.strptime('2020-04-19 00:00:00', '%Y-%m-%d %H:%M:%S'))
         self.obj1.extract_data(start, end)
         self.assertEqual(len(self.obj1.data), 163)
         url_list = [i['url'] for i in self.obj1.data]

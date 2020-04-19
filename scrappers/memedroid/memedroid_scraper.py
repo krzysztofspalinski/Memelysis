@@ -130,16 +130,9 @@ class Memedroid:
     def extract_data(self, start, end):
         """Extracts information about each meme in self.memes in defined a time interval start:end
         Arguments:
-            -start - datetime object that represent the begging of the interval
-            -end - datetime object that represent the ending of the interval
+            -start - a timestamp that represent the begging of the interval
+            -end - a timestamp that represent the ending of the interval
         """
-        try:
-            start = datetime.timestamp(start)
-            end = datetime.timestamp(end)
-        except TypeError:
-            print('Wrong data format')
-            return
-
         # search for data that correspond to given interval
         carry_on = True
         while carry_on:

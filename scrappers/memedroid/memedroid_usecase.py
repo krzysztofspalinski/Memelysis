@@ -8,14 +8,13 @@ from memedroid_scraper import Memedroid
 
 def get_data(start, end):
     """
-    Extracts memes information, downloads corresponding images and creates log.txt
+    Extracts memes information, downloads corresponding images from specified the time interval and creates log.txt
     Arguments:
-        -start - string representing a date of format '%Y-%m-%d %H:%M:%S'
-        -end - string representing a date of format '%Y-%m-%d %H:%M:%S'
+        -start - timestamp representing the beginning of the interval
+        -end - timestamp representing the ending of the interval
     """
     memedroid = Memedroid()
-    memedroid.extract_data(datetime.strptime(start, '%Y-%m-%d %H:%M:%S'),
-                           datetime.strptime(end, '%Y-%m-%d %H:%M:%S'))
+    memedroid.extract_data(start, end)
 
     date_hour_now = datetime.now().strftime("%Y%m%d%H")
     date_hour_nice = datetime.now().strftime('%Y %m %d, %H:%M')
@@ -57,4 +56,6 @@ def get_data(start, end):
 
 
 if __name__ == '__main__':
-    get_data("2020-04-18 20:00:00", "2020-04-18 23:00:00")
+    start = datetime.timestamp(datetime.strptime("2020-04-18 20:00:00", '%Y-%m-%d %H:%M:%S'))
+    end = datetime.timestamp(datetime.strptime("2020-04-18 23:00:00", '%Y-%m-%d %H:%M:%S'))
+    get_data(start, end)
