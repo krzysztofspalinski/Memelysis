@@ -33,7 +33,7 @@ def get_data(start, end):
     for meme in memedroid.data:
         url = meme['url']
         filename = f'memedroid_{date_hour_now}_{meme_number:05}'
-        filename = filename + url[-4:]  # File extension
+        filename = filename + url[-5:]  # File extension
 
         log = log + f'Downloading {filename} from {url}...'
         try:
