@@ -60,32 +60,27 @@ class TwitterCollector:
 
     def save_tweets_with_media(self,
                                hashtag,
-                               execution_time,
-                               lag,
+                               start,
+                               end,
                                directory,
                                count=None):
         """
         Saving tweets from given hashtag containing media to a JSON file
-        :param hashtag:
-        :param execution_time: date format: '%Y-%m-%d %H:%M:%S'
-        :param lag: difference between  execution time and tweets collection time (in hours)
-        :param directory:
-        :param count:
-        :return:
+        :param hashtag: collecting tweets with a given tag
+        :param start: date format: '%Y-%m-%d %H:%M:%S'
+        :param end: date format: '%Y-%m-%d %H:%M:%S'
+        :param directory: directory path for output files
+        :param count: The number of tweets to return per page
         """
 
-        # time range tweets are being collected
-        execution_time = datetime.datetime.strptime(execution_time, '%Y-%m-%d %H:%M:%S')
-        start = execution_time + datetime.timedelta(hours = -lag)
-        end = execution_time + datetime.timedelta(hours = (-lag + 1))
+        start = datetime.datetime.strptime(start, '%Y-%m-%d %H:%M:%S')
+        end = datetime.datetime.strptime(end, '%Y-%m-%d %H:%M:%S')
 
+        execution_time = datetime.datetime.now()
+        # time range tweets are being collected
         since = start.date()
         until = since + datetime.timedelta(days=1)
 
-        print(start)
-        print(end)
-        print(since)
-        print(until)
         tweets = self._get_hashtag_tweets(hashtag, since, until, count)
 
         # check if directory exists
@@ -110,17 +105,21 @@ class TwitterCollector:
             for tweet in tqdm(tweets.items()):
                     if tweet.entities.get('media', None) is not None and \
                         tweet.created_at >= start and tweet.created_at <= end:
-                        # TODO: check if we deal with image/video
-                        tweet_json = {"id" : tweet.id,
-                                      "created_at" : tweet.created_at,
-                                      "text" : tweet.text,
-                                      "favorite_count" : tweet.favorite_count,
-                                      "hashtags" : tweet.entities['hashtags'],
-                                      "media" : tweet.entities['media'][0]}
+                        # TODO: image/video
+                        tweet_json = {"url": tweet.entities['media'][0]['media_url'],
+                                      "additional_data": {
+                                          "id": tweet.id,
+                                          "created_at": tweet.created_at,
+                                          "text": tweet.text,
+                                          "favorite_count": tweet.favorite_count,
+                                          "retweet_count": tweet.retweet_count,
+                                          "hashtags": tweet.entities['hashtags']}
+                                      }
+
                         try:
-                            urlretrieve(tweet_json['media']['media_url'], storage_dir + str(tweet_json['id']))
+                            urlretrieve(tweet_json['url'], storage_dir + str(tweet_json['additional_data']['id']))
                         except:
-                            print("Cannot download image {}".format(tweet_json['media']['media_url']))
+                            print("Cannot download image {}".format(tweet_json['url']))
 
                         with open(output_file, 'a') as file:
                             file.write(str(tweet_json) + "\n")
@@ -129,7 +128,7 @@ class TwitterCollector:
             TweepErrorReached = True
 
         if TweepErrorReached: print("Tweep error reached!")
-        
+
         # Creating log
         log = {"output_file": output_file,
                "run": str(execution_time),
