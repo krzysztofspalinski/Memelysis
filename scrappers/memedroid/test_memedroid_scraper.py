@@ -63,9 +63,9 @@ class TestMemedroidObject(unittest.TestCase):
         self.meme_obj2.add_popularity()
         self.assertEqual(self.meme_obj2.meme_data['popularity'], '72%(1246)')
 
-    # def test_extract_info(self):
-    #     self.assertRaises(TypeError, self.meme_obj2.extract_info())
-    #     self.assertRaises(TypeError, self.not_a_meme.extract_info())
+    def test_extract_info(self):
+        self.assertRaises(TypeError, self.meme_obj2.extract_info())
+        self.assertRaises(TypeError, self.not_a_meme.extract_info())
 
 
 class TestMemedroid(unittest.TestCase):
