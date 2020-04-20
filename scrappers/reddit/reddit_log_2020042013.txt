@@ -1,0 +1,25 @@
+Downloading data from Reddit on 2020 04 20, 13:45. 
+Scanned 24 memes, found 23 memes to download. 
+Downloading reddit_2020042013_00001.jpg from https://i.redd.it/x1xzgicgnyt41.jpg... Done. 
+Downloading reddit_2020042013_00002.jpg from https://i.redd.it/1phnrmrfnyt41.jpg... Done. 
+Downloading reddit_2020042013_00003.png from https://i.redd.it/jafdm3pfnyt41.png... Done. 
+Downloading reddit_2020042013_00004.jpg from https://i.redd.it/irn28lgcnyt41.jpg... Done. 
+Downloading reddit_2020042013_00005.png from https://i.redd.it/wdzhfyn8nyt41.png... Done. 
+Downloading reddit_2020042013_00006.jpg from https://i.redd.it/ftnsrrhbnyt41.jpg... Done. 
+Downloading reddit_2020042013_00007.jpg from https://i.redd.it/xj9pqv3anyt41.jpg... Done. 
+Downloading reddit_2020042013_00008.jpg from https://i.redd.it/14avggm9nyt41.jpg... Done. 
+Downloading reddit_2020042013_00009.jpg from https://i.redd.it/cax8jke8nyt41.jpg... Done. 
+Downloading reddit_2020042013_00010.jpg from https://i.redd.it/y5g8o3a7nyt41.jpg... Done. 
+Downloading reddit_2020042013_00011.png from https://i.redd.it/t0gevfu5nyt41.png... Done. 
+Downloading reddit_2020042013_00012.jpg from https://i.redd.it/ej39ewv2nyt41.jpg... Done. 
+Downloading reddit_2020042013_00013.jpg from https://i.redd.it/rjf0pfe4nyt41.jpg... Done. 
+Downloading reddit_2020042013_00014.png from https://i.redd.it/zhn1xnc2nyt41.png... Done. 
+Downloading reddit_2020042013_00015.jpg from https://i.redd.it/rk29txe0nyt41.jpg... Done. 
+Downloading reddit_2020042013_00016.jpg from https://i.redd.it/jd9af6d0nyt41.jpg... Done. 
+Downloading reddit_2020042013_00017.jpg from https://i.redd.it/9008c6fzmyt41.jpg... Done. 
+Downloading reddit_2020042013_00018.png from https://i.redd.it/mxen0z1zmyt41.png... Done. 
+Downloading reddit_2020042013_00019.jpg from https://i.redd.it/p553u9uymyt41.jpg... Done. 
+Downloading reddit_2020042013_00020.jpg from https://i.redd.it/k7tcawtwmyt41.jpg... Done. 
+Downloading reddit_2020042013_00021.png from https://i.redd.it/qjz4vlqxmyt41.png... Done. 
+Downloading reddit_2020042013_00022.jpg from https://i.redd.it/loyxk4awmyt41.jpg... Done. 
+Downloading reddit_2020042013_00023.jpg from https://i.redd.it/yxf91g8kmyt41.jpg... Done. 
