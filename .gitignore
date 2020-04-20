@@ -1,2 +1,9 @@
-*py[cod]
-.vscode
+/Pyspark_SQL_testing
+/secrets
+.gitignore
+.ipynb_checkpoints
+.*
+/tmp
+/1_Milestone
+collect_data.py
+/Pyspark_SQL_testing
