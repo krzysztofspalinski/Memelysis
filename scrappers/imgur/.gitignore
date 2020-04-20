@@ -1,0 +1,5 @@
+credentials.py
+imgur
+imgur*.txt
+imgur*.json
+virtualenv
