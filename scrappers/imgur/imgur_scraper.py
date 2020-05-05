@@ -112,7 +112,7 @@ def obtain_data_from_imgur(
 
     directory_path = f"../../logs"
     pathlib.Path(directory_path).mkdir(parents=True, exist_ok=True)
-    log_path = os.path.join(directory_path, f'imgur_{time()}.log')
+    log_path = os.path.join(directory_path, f'imgur_scraper_{time()}.log')
     log = "\n".join(log) + "\n"
     with open(log_path, 'a') as file_:
         file_.write(log)

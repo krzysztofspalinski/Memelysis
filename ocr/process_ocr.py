@@ -45,9 +45,9 @@ if __name__ == "__main__":
     log.append(
         f"{time_extended()}: Image {image_url} downloaded to {image_path}.")
 
-    directory_path = f"../images/{image_source}"
+    directory_path = f"../logs/"
     pathlib.Path(directory_path).mkdir(parents=True, exist_ok=True)
-    log_path = os.path.join(directory_path, f"imgur_{current_time}.log")
+    log_path = os.path.join(directory_path, f"process_ocr_{current_time}.log")
     log = "\n".join(log) + "\n"
     with open(log_path, 'a') as file_:
         file_.write(log)
