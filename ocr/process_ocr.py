@@ -1,4 +1,5 @@
 import sys
+import os
 import json
 import urllib.request
 import datetime
@@ -32,7 +33,7 @@ if __name__ == "__main__":
         image_source = image_data["source"]
         image_filename = f"{image_source}_{current_time}_{i:05}.{image_extension}"
         try:
-            os.mkdir(source)
+            os.mkdir(image_source)
         except FileExistsError:
             pass
         finally:
