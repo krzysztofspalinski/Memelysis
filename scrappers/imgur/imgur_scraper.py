@@ -6,11 +6,14 @@ import urllib
 import requests
 from credentials import AUTHORIZATION
 
+
 def time():
     return datetime.datetime.now().strftime("%Y%m%d%H")
 
+
 def time_extended():
     return datetime.datetime.utcnow().strftime('%Y.%m.%d, %H:%M')
+
 
 def obtain_data_from_imgur(
         start_timestamp=None,
@@ -120,11 +123,13 @@ def main():
     shift = 0
     data = obtain_data_from_imgur(
         page=-1,
-        start_timestamp=int(datetime.datetime.utcnow().timestamp()) - 3600 * (shift+1),
-        end_timestamp=int(datetime.datetime.utcnow().timestamp()) - 3600 * shift,
+        start_timestamp=int(
+            datetime.datetime.utcnow().timestamp()) - 3600 * (shift+1),
+        end_timestamp=int(
+            datetime.datetime.utcnow().timestamp()) - 3600 * shift,
     )
     return data
 
 
 if __name__ == "__main__":
-    print(main())
+    print(json.dumps(main(), indent=4))
