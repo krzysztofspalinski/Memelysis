@@ -30,14 +30,14 @@ if __name__ == "__main__":
             log.append(
                 f"{time_extended()}: Failed to resolve {image_url} extension, png chosen.")
         image_source = image_data["source"]
-        image_filename = f"{source}_{current_time()}_{i:05}.{image_extension}"
+        image_filename = f"{image_source}_{current_time()}_{i:05}.{image_extension}"
         try:
             os.mkdir(source)
         except FileExistsError:
             pass
         finally:
             pass
-        image_path = f"{source}/{image_filename}"
+        image_path = f"{image_source}/{image_filename}"
         urllib.request.urlretrieve(image_url, image_path)
 
         image_data['text'] = f"Tekst {i}"
