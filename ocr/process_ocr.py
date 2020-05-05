@@ -41,9 +41,8 @@ if __name__ == "__main__":
         urllib.request.urlretrieve(image_url, image_path)
 
         image_data['text'] = f"Tekst {i}"
-
-    log.append(
-        f"{time_extended()}: Image {image_url} downloaded to {image_path}.")
+        log.append(
+            f"{time_extended()}: Image {image_url} downloaded to {image_path}.")
 
     directory_path = f"../logs/"
     pathlib.Path(directory_path).mkdir(parents=True, exist_ok=True)
@@ -51,3 +50,6 @@ if __name__ == "__main__":
     log = "\n".join(log) + "\n"
     with open(log_path, 'a') as file_:
         file_.write(log)
+
+    with open('output.txt', 'w') as f:
+        f.write(json.dumps(images_data, indent=4))
