@@ -4,6 +4,7 @@ import json
 import urllib.request
 import datetime
 import re
+import pathlib
 
 
 def time():
@@ -33,13 +34,10 @@ if __name__ == "__main__":
                 f"{time_extended()}: Failed to resolve {image_url} extension, png chosen.")
         image_source = image_data["source"]
         image_filename = f"{image_source}_{current_time}_{i:05}.{image_extension}"
-        try:
-            os.mkdir(image_source)
-        except FileExistsError:
-            pass
-        finally:
-            pass
-        image_path = f"{image_source}/{image_filename}"
+
+        directory_path = f"../images/{image_source}"
+        pathlib.Path(directory_path).mkdir(parents=True, exist_ok=True)
+        image_path = os.path.join(directory_path, image_filename)
         urllib.request.urlretrieve(image_url, image_path)
 
         image_data['text'] = f"Tekst {i}"
@@ -47,7 +45,9 @@ if __name__ == "__main__":
     log.append(
         f"{time_extended()}: Image {image_url} downloaded to {image_path}.")
 
-    log_path = os.path.join(sys.path[0], f'imgur_{current_time}.log')
+    directory_path = f"../images/{image_source}"
+    pathlib.Path(directory_path).mkdir(parents=True, exist_ok=True)
+    log_path = os.path.join(directory_path, f"imgur_{current_time}.log")
     log = "\n".join(log) + "\n"
     with open(log_path, 'a') as file_:
         file_.write(log)

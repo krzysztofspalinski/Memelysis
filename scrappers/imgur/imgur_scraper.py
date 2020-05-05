@@ -90,7 +90,7 @@ def obtain_data_from_imgur(
 
     log.append(f'{time_extended()}: Found {len(posts)} memes to download.')
 
-    # Save images in imgur dictionary
+    # Format JSON
 
     images = []
     for post in posts:
@@ -108,7 +108,10 @@ def obtain_data_from_imgur(
         container_path = os.path.join(sys.path[0], "tmp")
     else:
         container_path = os.path.join(sys.path[0])
-    log_path = os.path.join(container_path, f'imgur_{time()}.log')
+
+    directory_path = f"../../logs"
+    pathlib.Path(directory_path).mkdir(parents=True, exist_ok=True)
+    log_path = os.path.join(directory_path, f'imgur_{time()}.log')
     log = "\n".join(log) + "\n"
     with open(log_path, 'a') as file_:
         file_.write(log)
