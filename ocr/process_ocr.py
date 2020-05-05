@@ -1,7 +1,7 @@
 import sys
 import json
 import urllib.request
-from datetime import datetime
+import datetime
 import re
 
 
