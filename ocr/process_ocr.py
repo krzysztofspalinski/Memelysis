@@ -25,7 +25,8 @@ if __name__ == "__main__":
     for i, image_data in enumerate(images_data):
         image_url = image_data["url"]
         try:
-            image_extension = re.split(r'[^\w]', image_url.split('/')[-1])[0]
+            image_extension = re.split(
+                r'[^\w]', image_url.split('/')[-1].split('.')[1])[0]
         except KeyError:
             image_extension = "png"
             log.append(
