@@ -11,6 +11,7 @@ class ImgurScrapperTests(TestCase):
         start_timestamp = int(datetime.utcnow().timestamp()) - 3600 * 2
         end_timestamp = int(datetime.utcnow().timestamp())
         images = imgur_scraper.obtain_data_from_imgur(
+            page=-1,
             start_timestamp=start_timestamp,
             end_timestamp=end_timestamp,
             temporary=True

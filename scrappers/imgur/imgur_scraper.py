@@ -6,6 +6,11 @@ import urllib
 import requests
 from credentials import AUTHORIZATION
 
+def time():
+    return datetime.datetime.now().strftime("%Y%m%d%H")
+
+def time_extended():
+    return datetime.datetime.utcnow().strftime('%Y.%m.%d, %H:%M')
 
 def obtain_data_from_imgur(
         start_timestamp=None,
@@ -40,17 +45,9 @@ def obtain_data_from_imgur(
     max_attempts = 3
     posts = []
 
-    date_hour_now = datetime.datetime.now().strftime("%Y%m%d%H")
-    date_hour_nice = datetime.datetime.utcnow().strftime('%Y %m %d, %H:%M')
-
-    if temporary is True:
-        container_path = os.path.join(sys.path[0], "tmp")
-    else:
-        container_path = os.path.join(sys.path[0])
-
     # Obtain post list
 
-    log.append(f"Downloading data from imgur on {date_hour_nice}.")
+    log.append(f"{time_extended()}: Obtaining data from imgur.")
 
     if int(page) != -1:
         attempts = 0
@@ -87,67 +84,30 @@ def obtain_data_from_imgur(
 
     posts = [post for post in posts if all("image" in image.get(
         "type", '') for image in post.get('images', []))]
-    log.append(f'Found {len(posts)} memes to download.')
+
+    log.append(f'{time_extended()}: Found {len(posts)} memes to download.')
 
     # Save images in imgur dictionary
 
-    imgur_dir = os.path.join(container_path, "imgur")
-
-    if not os.path.exists(imgur_dir):
-        os.makedirs(imgur_dir)
-
     images = []
-
     for post in posts:
-
-        post_date = post.get("datetime")
-        post_title = post.get("title")
-        post_additional_data = {
-            "date": post_date,
-            "title": post_title
-        }
-        post_additional_data.update(
-            {k: v for k, v in post.items() if k not in ["datetime", "title"]})
         for image in post.get("images", []):
-
-            post_timestamp = post_date
-            image_id = image["id"]
             image_url = image["link"]
-
-            try:
-                file_extension = image_url.split('/')[-1].split('.')[1]
-            except KeyError:
-                file_extension = "png"
-
-            file_name = f"imgur_{post_timestamp}_{image_id}.{file_extension}"
-
-            image_path = os.path.join(imgur_dir, file_name)
-
-            log.append(f'Downloading {image_path} from {image_url}.')
-            try:
-                urllib.request.urlretrieve(image_url, image_path)
-                log.append(f'Done.')
-            except ValueError:
-                log.append("Failed, unknown url")
-            except:
-                log.append("Failed.")
-
             images.append({
                 'url': image_url,
-                'additional_data': post_additional_data,
+                'source': "imgur",
+                'additional_data': post,
             })
-
-    # Save json file
-
-    json_path = os.path.join(container_path, f'imgur_{date_hour_now}.json')
-    with open(json_path, 'w') as file_:
-        file_.write(json.dumps(images, indent=1))
 
     # Save log file
 
-    log_path = os.path.join(container_path, f'imgur_{date_hour_now}.txt')
-    log = "\n".join(log)
-    with open(log_path, 'w') as file_:
+    if temporary is True:
+        container_path = os.path.join(sys.path[0], "tmp")
+    else:
+        container_path = os.path.join(sys.path[0])
+    log_path = os.path.join(container_path, f'imgur_{time()}.log')
+    log = "\n".join(log) + "\n"
+    with open(log_path, 'a') as file_:
         file_.write(log)
 
     return images
@@ -157,11 +117,14 @@ def main():
     """Obtains images from imgur.com
     """
 
-    obtain_data_from_imgur(
+    shift = 0
+    data = obtain_data_from_imgur(
         page=-1,
-        window="day"
+        start_timestamp=int(datetime.datetime.utcnow().timestamp()) - 3600 * (shift+1),
+        end_timestamp=int(datetime.datetime.utcnow().timestamp()) - 3600 * shift,
     )
+    return data
 
 
 if __name__ == "__main__":
-    main()
+    print(main())
