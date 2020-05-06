@@ -1,8 +1,10 @@
 import sys
+from io import BytesIO
 
 if __name__ == "__main__":
-    data = sys.stdin.read()
-    with open("data_type.txt", "w") as f:
-        f.write(type(data))
+    image = Image.open(BytesIO(sys.stdin.buffer.read()))
+    image.save(f"img.{image.format}", "w")
 
-    print(data)
+    # OCR on image
+
+    print(image)
