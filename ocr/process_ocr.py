@@ -11,4 +11,3 @@ if __name__ == "__main__":
     image_text = "Text from image"
 
     print(json.dumps({"image_text": image_text}))
-c
