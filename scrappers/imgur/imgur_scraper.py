@@ -97,8 +97,10 @@ def obtain_data_from_imgur(
     for post in posts:
         for image in post.get("images", []):
             image_url = image["link"]
+            image_id = image["id"]
             images.append({
                 'url': image_url,
+                'id': image_id,
                 'source': "imgur",
                 'additional_data': post,
             })
