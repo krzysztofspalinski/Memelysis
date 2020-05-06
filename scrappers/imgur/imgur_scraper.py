@@ -5,6 +5,7 @@ import os
 import urllib
 import requests
 import pathlib
+import re
 from credentials import AUTHORIZATION
 
 
@@ -97,9 +98,17 @@ def obtain_data_from_imgur(
     for post in posts:
         for image in post.get("images", []):
             image_url = image["link"]
+            try:
+                image_extension = re.split(
+                    r'[^\w]', image_url.split('/')[-1].split('.')[1])[0]
+            except KeyError:
+                image_extension = "png"
+                log.append(
+                    f"{time_extended()}: Failed to resolve {image_url} extension, png chosen.")
             image_id = image["id"]
             images.append({
                 'url': image_url,
+                'extension': image_extension,
                 'id': image_id,
                 'source': "imgur",
                 'additional_data': post,
