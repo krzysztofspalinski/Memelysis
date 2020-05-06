@@ -7,6 +7,7 @@ if __name__ == "__main__":
     image.save(f"img.{image.format}")
 
     # OCR on image
-    text = "Text from image"
+    image_text = "Text from image"
 
-    print(text)
+    print(json.dumps({"image_text": image_text}))
+c
