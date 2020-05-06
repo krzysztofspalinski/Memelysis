@@ -39,10 +39,13 @@ if __name__ == "__main__":
         pathlib.Path(directory_path).mkdir(parents=True, exist_ok=True)
         image_path = os.path.join(directory_path, image_filename)
         urllib.request.urlretrieve(image_url, image_path)
-
-        image_data['text'] = f"Tekst {i}"
         log.append(
             f"{time_extended()}: Image {image_url} downloaded to {image_path}.")
+
+        image_text = f"Tekst {i}"
+        image_data['text'] = image_text
+        log.append(
+            f"{time_extended()}: Text \"{image_text}\" obtained from {image_url}.")
 
     directory_path = f"../logs/"
     pathlib.Path(directory_path).mkdir(parents=True, exist_ok=True)
@@ -51,5 +54,4 @@ if __name__ == "__main__":
     with open(log_path, 'a') as file_:
         file_.write(log)
 
-    with open('output.txt', 'w') as f:
-        f.write(json.dumps(images_data, indent=4))
+    print(json.dumps(images_data, indent=4))
