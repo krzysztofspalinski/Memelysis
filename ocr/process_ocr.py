@@ -10,4 +10,4 @@ if __name__ == "__main__":
     # OCR on image
     image_text = "Text from image"
 
-    print(json.dumps({"image_text": image_text}))
+    print(json.dumps({"text": image_text}))
