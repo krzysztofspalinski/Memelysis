@@ -1,6 +1,7 @@
 import sys
 from io import BytesIO
 from PIL import Image
+import json
 
 if __name__ == "__main__":
     image = Image.open(BytesIO(sys.stdin.buffer.read()))
