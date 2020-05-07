@@ -62,7 +62,7 @@ def get_memes_to_upload(new_memes, start_timestamp, end_timestamp):
                 'url': img_url,
                 'extension': img_extension,
                 'source': "reddit",
-                'id': 'reddit_' + str(date_hour_now) + '_' + str(scanned_memes),
+                'id': f"{date_hour_now}{scanned_memes:06}",
                 'additional_data': data
             }
 
