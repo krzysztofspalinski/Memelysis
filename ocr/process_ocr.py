@@ -8,7 +8,7 @@ import os
 
 if __name__ == "__main__":
 
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./GCP-cred.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/secrets/GCP-cred.json"
 
     client = vision.ImageAnnotatorClient()
 
