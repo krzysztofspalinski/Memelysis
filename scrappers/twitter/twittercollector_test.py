@@ -1,54 +1,50 @@
 import os
 from twittercollector import TwitterCollector
+import unittest
 
-def test_files_exist(directory):
+class TwitterCollectorTest(unittest.TestCase):
 
-    # check if directory and output files have been properly created
-    assert os.path.exists(directory)
-    assert len(os.listdir(directory)) == 3
+    def test_1_run_collector(self):
+        # credentials
+        ACCESS_TOKEN = None
+        ACCESS_SECRET = None
+        CONSUMER_KEY = None
+        CONSUMER_SECRET = None
 
-    for i in os.listdir(directory):
-        if '.json' not in i and '.txt' not in i:
-            main_name = i
-    for i in os.listdir(directory):
-        assert main_name in i
+        DIR = "./test/"
+        HASHTAG = "meme"
+        self.tc = TwitterCollector(CONSUMER_KEY,
+                              CONSUMER_SECRET,
+                              ACCESS_TOKEN,
+                              ACCESS_SECRET)
+        self.tc.save_tweets_with_media(HASHTAG,
+                                  start="2020-04-17 23:00:00",
+                                  end="2020-04-18 00:00:00",
+                                  directory=DIR,
+                                  count=100)
 
+    def test_2_files_exist(self):
 
-    return "Test passed!"
+        directory = "./test/"
 
-def test_directory_already_exists(tc,
-                                  hashtag,
-                                  start,
-                                  end,
-                                  dir):
-    #check if TwitterCollector starts if directory already exists
+        self.assertTrue(os.path.exists(directory))
+        self.assertEqual(len(os.listdir(directory)), 3)
 
-    try:
-        tc.save_tweets_with_media(hashtag, start, end, dir)
-    except Exception:
-        return "Test passed!"
+    def test_3_proper_filenames(self):
 
-def main():
-    #example use
-    ACCESS_TOKEN = None
-    ACCESS_SECRET = None
-    CONSUMER_KEY = None
-    CONSUMER_SECRET = None
-    DIR = "./test/"
-    HASHTAG = "meme"
-    tc = TwitterCollector(CONSUMER_KEY,
-                          CONSUMER_SECRET,
-                          ACCESS_TOKEN,
-                          ACCESS_SECRET)
-    tc.save_tweets_with_media(HASHTAG,
-                              start="2020-04-17 23:00:00",
-                              end="2020-04-18 00:00:00",
-                              directory=DIR)
+        directory = "./test/"
 
-    print(test_files_exist(DIR))
-    print(test_directory_already_exists(tc, HASHTAG, "2020-04-17 23:00:00", "2020-04-18 00:00:00", DIR))
+        for i in os.listdir(directory):
+            if '.json' not in i and '.txt' not in i:
+                main_name = i
+        for i in os.listdir(directory):
+            self.assertTrue(main_name in i)
 
+    def test_4_directory_already_exists(self):
+
+        with self.assertRaises(Exception):
+            self.tc.save_tweets_with_media("meme", "2020-04-17 23:00:00", "2020-04-18 00:00:00", "./test/")
 
 
 if __name__ == "__main__":
-    main()
+    unittest.main()
