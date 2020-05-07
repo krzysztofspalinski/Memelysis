@@ -4,10 +4,15 @@ from PIL import Image
 import json
 
 if __name__ == "__main__":
-    image = Image.open(BytesIO(sys.stdin.buffer.read()))
-    image.save(f"img.{image.format}")
+    
+    # load image
+    content = BytesIO(sys.stdin.buffer.read())
+    image = vision.types.Image(content=content)
 
     # OCR on image
-    image_text = "Text from image"
+    response = client.text_detection(image=image)
+    image_text = response_dict['textAnnotations'][0]['description']
+    image_text = image_text.replace('\n', ' ')
 
+    # Return OCR text
     print(json.dumps({"text": image_text}))
