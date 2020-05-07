@@ -1,5 +1,7 @@
 credentials.py
 imgur
-imgur*.txt
+imgur*.log
 imgur*.json
 virtualenv
+*.cpython
+*.py[cod]

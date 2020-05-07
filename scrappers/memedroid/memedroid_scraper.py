@@ -150,6 +150,9 @@ class Memedroid:
                 # current meme is in the given interval
                 elif start <= tmp_date <= end:
                     self.data.append({'url': meme.url,
+                                      'extension':  meme.url.split("/")[-1].split('.')[-1],
+                                      'id': meme.url.split("/")[-2] + meme.url.split("/")[-1].split('.')[0],
+                                      'source':"memedroid",
                                       'additional_data': meme.meme_data})
                 # current meme is too old
                 else:
