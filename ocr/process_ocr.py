@@ -3,11 +3,12 @@ from io import BytesIO
 import json
 from google.cloud import vision
 from google.protobuf.json_format import MessageToDict
+import os
 
 
 if __name__ == "__main__":
-	
-	os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./GCP-cred.json"
+
+	os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./GCP-cred.json"
 
     client = vision.ImageAnnotatorClient()
 
