@@ -7,3 +7,5 @@
 /1_Milestone
 collect_data.py
 /Pyspark_SQL_testing
+__pycache__
+.py[cod]

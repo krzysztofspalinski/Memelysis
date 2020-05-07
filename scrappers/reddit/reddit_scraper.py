@@ -78,7 +78,7 @@ def main():
     shift = 0
     data = obtain_data_from_reddit(start_timestamp=datetime.utcnow().timestamp() - 3600 * (shift + 1),
                                    end_timestamp=datetime.utcnow().timestamp() - 3600 * shift,
-                                   secrets_file_location='./reddit.json')
+                                   secrets_file_location='/home/secrets/reddit.json')
     return data
 
 
