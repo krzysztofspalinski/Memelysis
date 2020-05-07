@@ -14,13 +14,15 @@ def obtain_data_from_reddit(start_timestamp: float, end_timestamp: float, secret
     subreddit = reddit.subreddit('memes')
     new_memes = subreddit.new(limit=1500)
 
-    memes_to_download, scanned_memes = get_memes_to_upload(new_memes, start_timestamp, end_timestamp)
+    memes_to_download, scanned_memes = get_memes_to_upload(
+        new_memes, start_timestamp, end_timestamp)
 
     date_hour_now = datetime.now().strftime("%Y%m%d%H")
     date_hour_nice = datetime.now().strftime('%Y %m %d, %H:%M')
 
     log = f'Downloading data from Reddit on {date_hour_nice}. \n'
-    log = log + f'Scanned {scanned_memes} memes, found {len(memes_to_download)} memes to download. \n'
+    log = log + \
+        f'Scanned {scanned_memes} memes, found {len(memes_to_download)} memes to download. \n'
 
     # Save json file
     json_filename = f'./reddit_{date_hour_now}.json'
@@ -51,13 +53,15 @@ def get_memes_to_upload(new_memes, start_timestamp, end_timestamp):
 
             img_url = str(submission.url)
             try:
-                img_extension = re.split(r'[^\w]', img_url.split('/')[-1].split('.')[1])[0]
+                img_extension = re.split(
+                    r'[^\w]', img_url.split('/')[-1].split('.')[1])[0]
             except:
                 img_extension = "png"
 
             meme = {
                 'url': img_url,
                 'extension': img_extension,
+                'source': "reddit",
                 'id': 'reddit_' + str(date_hour_now) + '_' + str(scanned_memes),
                 'additional_data': data
             }
