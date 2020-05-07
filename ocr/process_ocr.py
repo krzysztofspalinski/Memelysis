@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
 	os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./GCP-cred.json"
 
-    client = vision.ImageAnnotatorClient()
+    client = vision.Image.AnnotatorClient()
 
     # load image
     content = sys.stdin.buffer.read()
