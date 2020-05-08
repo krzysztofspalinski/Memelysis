@@ -7,22 +7,19 @@ from pyspark import SparkContext
 import pyspark
 import ast
 import pandas as pd 
+import json
 
-def parse(df):
+def parse(path, sqlContext):
     """
     Parse json from all sources
     """
 
-    memedroid_cols = ['id', 'extension', 'image_path', 'source', 'text', 'url', 'date', 'title', 'popularity', 'tags']
-    twitter_cols = ['id', 'extension', 'source', 'text', 'url', 'created_at', 'title', 'hashtags', 'favorite_count', 'retweet_count']  
-    reddit_cols = ['id', 'extension', 'source', 'title', 'url', 'date', 'title', 'upvotes' 'upvote_ratio'] 
-    imgur_cols = ['id', 'extension', 'source', 'url', 'additional_data'] 
-
-    json_cols = {"twitter": twitter_cols, "reddit": reddit_cols, "imgur": imgur_cols, "memedroid": memedroid_cols}
-
     df = sqlContext.read.option("multiline", True).option("mode", "PERMISSIVE").json(path)
     df = df.toPandas()
-    d = ast.literal_eval(df.loc[0, 'additional_data'])
+
+    
+    print(json.loads(df.loc[0, 'additional_data']))
+    d = json.loads(df.loc[0, 'additional_data'])
 
     json_source = df.loc[0, "source"]
 
@@ -33,10 +30,8 @@ def parse(df):
             ans.append(d[col])
         except KeyError:
             ans.append(df.loc[0, col])
-        finally:
-            ans.append(None)
 
-    return pd.DataFrame(ans, columns=json_cols[json_source])
+    return ans
 
 def main():
     print('Hello world')
@@ -57,11 +52,31 @@ def main():
     for i in out:
         print(i)
 
+
+    memedroid_cols = ['source', 'id', 'extension', 'image_path', 'text', 'url', 'date', 'title', 'popularity', 'tags']
+    twitter_cols = ['source', 'id', 'extension', 'text', 'url', 'created_at', 'hashtags', 'favorite_count', 'retweet_count']  
+    reddit_cols = ['source', 'id', 'extension', 'title', 'url', 'date', 'title', 'upvotes', 'upvote_ratio'] 
+    imgur_cols = ['source', 'id', 'extension', 'url', 'additional_data'] 
+
+    json_cols = {"twitter": twitter_cols, "reddit": reddit_cols, "imgur": imgur_cols, "memedroid": memedroid_cols}
+
+
     sc = SparkContext()
     sqlContext = SQLContext(sc)
     
+    parsed_jsons = []
+
     for json in out:
-        print(parse(json))
+        parsed_jsons.append(parse(json, sqlContext, json_cols))
+
+    json_cols = {"twitter": [], "reddit": [], "imgur": [], "memedroid": []}
+
+    for row in parsed_jsons:
+        json_cols[row[0]].append(row)
+
+    for source_name, data in json_cols.items():
+        df = pd.DataFrame(data, columns=json_cols[source_name])
+        print(df.head())
 
 
 if __name__ == "__main__":
