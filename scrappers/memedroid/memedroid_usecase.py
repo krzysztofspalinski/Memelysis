@@ -57,7 +57,7 @@ def get_data(start, end):
 
 
 if __name__ == '__main__':
-    shift = 4 #
-    start = int(datetime.utcnow().timestamp()) - shift * 3600
-    end = int(datetime.utcnow().timestamp()) - (shift - 3) * 3600
+    shift = 3
+    start = int(datetime.utcnow().timestamp()) - (shift+1) * 3600
+    end = int(datetime.utcnow().timestamp()) - shift * 3600
     print(get_data(start, end))

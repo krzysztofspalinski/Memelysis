@@ -135,7 +135,7 @@ def main():
     """Obtains images from imgur.com
     """
 
-    shift = 0
+    shift = 3
     data = obtain_data_from_imgur(
         page=-1,
         start_timestamp=int(
