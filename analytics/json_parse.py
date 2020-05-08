@@ -9,7 +9,7 @@ import ast
 import pandas as pd 
 import json
 
-def parse(path, sqlContext):
+def parse(path, sqlContext, json_cols):
     """
     Parse json from all sources
     """
@@ -17,8 +17,6 @@ def parse(path, sqlContext):
     df = sqlContext.read.option("multiline", True).option("mode", "PERMISSIVE").json(path)
     df = df.toPandas()
 
-    
-    print(json.loads(df.loc[0, 'additional_data']))
     d = json.loads(df.loc[0, 'additional_data'])
 
     json_source = df.loc[0, "source"]
@@ -75,9 +73,8 @@ def main():
         json_cols[row[0]].append(row)
 
     for source_name, data in json_cols.items():
-        df = pd.DataFrame(data, columns=json_cols[source_name])
-        print(df.head())
-
+        #df = pd.DataFrame(data, columns=json_cols[source_name])
+        #print(df.head())
 
 if __name__ == "__main__":
     main()
