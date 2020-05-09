@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'hello_world.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kspalinskis_memelysis',
-        'USER': 'kspalinskis_memelysis',
-        'PASSWORD': 'T0hr$knw\g',
-        'HOST': 'p22a.progreso.pl',
-        'PORT': '',
+        'NAME': 'memelysis',
+        'USER': 'root',
+        'PASSWORD': 'T4ineH45l0',
+        'HOST': '10.128.0.10',
+        'PORT': '5000',
     }
 }
 
