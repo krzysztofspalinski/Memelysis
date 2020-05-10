@@ -87,6 +87,9 @@ WSGI_APPLICATION = 'memelysis.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'memelysis',
+        'USER': 'root',
+        'PASSWORD': 'T4ineH45l0',
         'HOST': '/cloudsql/gcp-testing-274413:us-east1:memelysis-db',
     }
 }
