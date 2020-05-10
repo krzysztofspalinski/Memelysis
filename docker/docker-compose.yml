@@ -44,4 +44,4 @@ services:
       - ../scrapers:/Memelysis/scrapers
       - ../hdfs:/Memelysis/hdfs
       - ../ocr:/Memelysis/ocr
-      - /opt/nifi_data:/var/lib/nifi
+      - /opt/nifi_data:/opt/nifi
