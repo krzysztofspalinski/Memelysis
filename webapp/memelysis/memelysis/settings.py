@@ -25,7 +25,8 @@ SECRET_KEY = 'p*=euf%5y-c3v78g5!x6-6c_7c-*ij@+-(yq(rhae=niqsvv9)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['gcp-testing-274413.ue.r.appspot.com']
+ALLOWED_HOSTS = ['gcp-testing-274413.ue.r.appspot.com',
+                 '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -88,7 +89,7 @@ DATABASES = {
         'NAME': 'memelysis',
         'USER': 'root',
         'PASSWORD': 'T4ineH45l0',
-        'HOST': '10.128.0.10',
+        'HOST': '34.68.201.228',
         'PORT': '5000',
     }
 }
