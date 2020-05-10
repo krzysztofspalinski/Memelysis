@@ -74,26 +74,22 @@ WSGI_APPLICATION = 'memelysis.wsgi.application'
 
 
 # Database
-# https: // docs.djangoproject.com/en/3.0/ref/settings/  # databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        ''
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'memelysis',
-#         'USER': 'root',
-#         'PASSWORD': 'T4ineH45l0',
-#         'HOST': '34.68.201.228',
-#         'PORT': '5000',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         ''
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '/cloudsql/gcp-testing-274413:us-east1:memelysis-db',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
