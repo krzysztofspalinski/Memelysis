@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import Memes
 
 
 def index(request):
-    return HttpResponse("Test połączenia.")
+    memes = Memes.objects.all()
+    return render(request, 'index/home.html', context={'memes': memes})

@@ -1,0 +1,5 @@
+{% load static %}
+
+{% for meme in memes %}
+    <img src="{% static meme.image_path %}" width="30%" />
+{% endfor %}

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'index',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -89,7 +90,7 @@ DATABASES = {
         'NAME': 'memelysis',
         'USER': 'root',
         'PASSWORD': 'T4ineH45l0',
-        'HOST': '34.68.201.228',
+        'HOST': '10.128.0.10',
         'PORT': '5000',
     }
 }
@@ -130,4 +131,4 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'https://storage.cloud.google.com/images-and-logs/'
