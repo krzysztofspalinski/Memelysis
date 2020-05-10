@@ -90,8 +90,8 @@ DATABASES = {
         'NAME': 'memelysis',
         'USER': 'root',
         'PASSWORD': 'T4ineH45l0',
-        'HOST': '34.73.27.235',
-        'PORT': '3306',
+        'HOST': '34.68.201.228',
+        'PORT': '5000',
     }
 }
 
