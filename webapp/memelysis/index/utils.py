@@ -3,9 +3,9 @@ import matplotlib.patches as mpatches
 import time
 import numpy as np
 import base64
-import urllib.request
 from io import BytesIO
 import matplotlib
+import requests
 
 matplotlib.use('Agg')
 
@@ -13,46 +13,38 @@ matplotlib.use('Agg')
 def get_distribution_plot(meme_score: int, meme_source: str):
 
     if meme_source == 'reddit':
-        try:
-            data = np.fromfile('reddit_upvote', dtype=np.int32)
-        except:
-            url = 'https://storage.googleapis.com/images-and-logs/distributions/reddit_upvote'
-            urllib.request.urlretrieve(url, './reddit_upvote')
-            data = np.fromfile('reddit_upvote', dtype=np.int32)
+        response = requests.get(
+            'https://storage.googleapis.com/images-and-logs/distributions/reddit_upvote', stream=True)
+        reddit_upvote = response.raw.read()
+        data = np.frombuffer(reddit_upvote, dtype=np.int32)
         hist, bins, _ = plt.hist(data, bins=50)
         bins = np.logspace(np.log10(bins[0]), np.log10(bins[-1]), len(bins))
         plt.close('all')
         plt.xscale('log')
 
     if meme_source == 'twitter':
-        try:
-            data = np.fromfile('twitter_upvote', dtype=np.int32)
-        except:
-            url = 'https://storage.googleapis.com/images-and-logs/distributions/twitter_upvote'
-            urllib.request.urlretrieve(url, './twitter_upvote')
-            data = np.fromfile('twitter_upvote', dtype=np.int32)
+        response = requests.get(
+            'https://storage.googleapis.com/images-and-logs/distributions/twitter_upvote')
+        twitter_upvote = response.raw.read()
+        data = np.frombuffer(twitter_upvote, dtype=np.int32)
         hist, bins, _ = plt.hist(data, bins=10)
         bins = np.logspace(np.log10(bins[0]), np.log10(bins[-1]), len(bins))
         plt.close('all')
         plt.xscale('log')
 
     if meme_source == 'memedroid':
-        try:
-            data = np.fromfile('memedroid_upvote', dtype=np.int32)
-        except:
-            url = 'https://storage.googleapis.com/images-and-logs/distributions/memedroid_upvote'
-            urllib.request.urlretrieve(url, './memedroid_upvote')
-            data = np.fromfile('memedroid_upvote', dtype=np.int32)
+        response = requests.get(
+            'https://storage.googleapis.com/images-and-logs/distributions/memedroid_upvote')
+        memedroid_upvote = response.raw.read()
+        data = np.frombuffer(memedroid_upvote, dtype=np.int32)
         hist, bins, _ = plt.hist(data, bins=25)
         plt.close('all')
 
     if meme_source == 'imgur':
-        try:
-            data = np.fromfile('imgur_upvote', dtype=np.int32)
-        except:
-            url = 'https://storage.googleapis.com/images-and-logs/distributions/imgur_upvote'
-            urllib.request.urlretrieve(url, './imgur_upvote')
-            data = np.fromfile('imgur_upvote', dtype=np.int32)
+        response = requests.get(
+            'https://storage.googleapis.com/images-and-logs/distributions/imgur_upvote')
+        imgur_upvote = response.raw.read()
+        data = np.frombuffer(imgur_upvote, dtype=np.int32)
         hist, bins, _ = plt.hist(data, bins=20)
         bins = np.logspace(np.log10(bins[0]), np.log10(bins[-1]), len(bins))
         plt.close('all')
