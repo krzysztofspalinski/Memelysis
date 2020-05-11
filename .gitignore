@@ -10,3 +10,4 @@ collect_data.py
 __pycache__
 .py[cod]
 env
+static
