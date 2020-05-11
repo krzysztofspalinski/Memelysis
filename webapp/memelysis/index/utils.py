@@ -3,7 +3,7 @@ import matplotlib.patches as mpatches
 import time
 import numpy as np
 import base64
-import urllib
+import urllib.request
 from io import BytesIO
 import matplotlib
 
