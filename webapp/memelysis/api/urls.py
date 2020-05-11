@@ -5,4 +5,5 @@ app_name = "api"
 
 urlpatterns = [
     path('memes', memes, name='memes'),
+    path('memes_scores', memes_scores, name='memes-scores'),
 ]
