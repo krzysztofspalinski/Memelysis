@@ -91,7 +91,7 @@ DATABASES = {
         'NAME': 'memelysis',
         'USER': 'root',
         'PASSWORD': 'T4ineH45l0',
-        'HOST': '35.237.28.246',
+        'HOST': '/cloudsql/gcp-testing-274413:us-east1:memelysis-db',
     }
 }
 
