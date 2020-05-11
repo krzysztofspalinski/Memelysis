@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponseNotFound
 from datetime import datetime, timezone
-from index.models import Memes, Sources, MemesUpvotesStatistics
+from index.models import Memes, Sources, MemesUpvotesStatistics, MemesClusters
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.db.utils import IntegrityError
@@ -70,6 +70,35 @@ def memes_scores(request):
                         upvotes_centile=upvotes_centile,
                     )
                     return JsonResponse(serializers.serialize('json', [meme_score]), safe=False)
+                except (IntegrityError, Memes.DoesNotExist) as e:
+                    return JsonResponse({'error': str(e)})
+        else:
+            return JsonResponse({'error': 'Wrong password.'})
+    else:
+        return JsonResponse({'error': f"This request method is not supported: {request.method}"})
+
+
+@csrf_exempt
+def memes_clusters(request):
+    if request.method == "POST":
+        data = request.POST
+        data_password = data.get('password', '')
+        if str(data_password) == "82034723402347":
+            try:
+                meme_id_posted = data['id']
+                meme_cluster_posted = data['cluster']
+            except KeyError as e:
+                return JsonResponse({'error': str(e)})
+            else:
+                meme_id = str(meme_id_posted)
+                meme_cluster = str(meme_cluster_posted)
+                try:
+                    meme = Memes.objects.get(meme_id=meme_id)
+                    meme_cluster_object = MemesClusters.objects.create(
+                        meme=meme,
+                        cluster=meme_cluster,
+                    )
+                    return JsonResponse(serializers.serialize('json', [meme_cluster_object]), safe=False)
                 except (IntegrityError, Memes.DoesNotExist) as e:
                     return JsonResponse({'error': str(e)})
         else:
