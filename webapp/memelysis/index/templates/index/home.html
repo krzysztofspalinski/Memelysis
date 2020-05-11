@@ -38,18 +38,20 @@
     </div>
     <div class="container shadow bg-white">
         {% for meme in memes %}
-        <div class="row mt-3 p-3">
-            <div class="col-8">
-                <img src="{% static meme.image_path %}" width="100%" />
+        <div class="row mt-3 p-3 border-bottom">
+            <div class="col-7">
+                <img src="{% static meme.image_path %}" width="100%" class="border" />
             </div>
-            <div class="col-4">
+            <div class="col-5" style="display: flex; flex-direction: column;">
                 <div class="row">
                     <div class="col-12">
                         <h4>Meme from {{meme.source}} posted at {{meme.meme_datetime}}</h4>
                     </div>
                 </div>
-                <div class="row" style="position: absolute; bottom: 0">
-                    <div class="col-12">Dystrybucja</div>
+                <div class="row" style="flex-grow: 1;">
+                    <div class="col-12" style=" vertical-align: bottom">
+                        <img src="{{meme.image_data}}" style="max-width:100%" />
+                    </div>
                 </div>
             </div>
         </div>

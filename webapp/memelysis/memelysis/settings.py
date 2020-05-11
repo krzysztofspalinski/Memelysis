@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+from google.oauth2 import service_account
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -90,9 +92,15 @@ DATABASES = {
         'NAME': 'memelysis',
         'USER': 'root',
         'PASSWORD': 'T4ineH45l0',
-        'HOST': '/cloudsql/gcp-testing-274413:us-east1:memelysis-db',
+        'HOST': '35.237.28.246',
     }
 }
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase'
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -130,4 +138,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = 'https://storage.cloud.google.com/images-and-logs/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'images-and-logs'
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+STATIC_URL = 'https://storage.googleapis.com/images-and-logs/'
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    'gcp-testing-274413-1b412cb2442d.json'
+)

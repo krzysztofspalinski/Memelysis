@@ -11,3 +11,6 @@ __pycache__
 .py[cod]
 env
 static
+*_upvote
+*.log
+gcp-testing-274413-1b412cb2442d.json
