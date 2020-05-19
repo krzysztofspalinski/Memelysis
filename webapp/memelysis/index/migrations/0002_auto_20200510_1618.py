@@ -5,14 +5,14 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('index', '0001_initial'),
-    ]
+	dependencies = [
+		('index', '0001_initial'),
+	]
 
-    operations = [
-        migrations.RenameField(
-            model_name='memes',
-            old_name='meme_timestamp',
-            new_name='meme_datetime',
-        ),
-    ]
+	operations = [
+		migrations.RenameField(
+			model_name='memes',
+			old_name='meme_timestamp',
+			new_name='meme_datetime',
+		),
+	]

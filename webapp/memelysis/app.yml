@@ -6,5 +6,5 @@ handlers:
   # (along with the entire handlers section) when there are no static
   # files defined.
   - url: /.*
-    script: auto
+	script: auto
 # [END django_app]

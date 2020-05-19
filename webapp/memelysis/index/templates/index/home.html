@@ -1,61 +1,84 @@
-{% load static %}
+{% extends "index/base.html" %}
+{% block content %}
+	{% load static %}
+	<div class="container shadow bg-white">
+		{% for meme, graph in data %}
+		<div class="row mt-3 p-3 border-bottom">
+			<div class="col-6">
+				<img src="{% static meme.image_path %}" width="100%" class="border" />
+			</div>
+			<div class="col-6" style="display: flex; flex-direction: column;">
+				<div class="row">
+					<div class="col-12">
+						<h4>Meme from {{meme.source}}</h4>
+						<h6>Posted at {{meme.meme_datetime}}</h6>
+						<hr>
+					</div>
+				</div>
+				<div class="row" style="flex-grow: 1;">
+					{% include "index/graph.html" %}
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="container shadow bg-white">
+		{% if memes.has_other_pages %}
+		<div class="row mt-3 p-3 justify-content-center">
+			<div class="row justify-content-center">
+				<div class="text-xs-center">
+					<ul class="pagination justify-content-center">
+						{% if memes.has_previous %}
+							<li>
+								<a class="page-link" href="?page={{ memes.previous_page_number }}">&laquo;</a>
+							</li>
+						{% else %}
+							<li class="page-item disabled">
+								<a class="page-link"><span>&laquo;</span></a>
+							</li>
+						{% endif %}
+						{% for i in memes.paginator.page_range %}
+							{% if i < memes.number|add:"-1" %}
+							{% elif memes.number == i %}
+								<li class="page-item"><a class="page-link">
+									<span>{{ i }}<span class="sr-only">(current)</span></span></a>
+								</li>
+							{% elif i > memes.number|add:2 %}
+							{% else %}
+								<li class="page-item">
+									<a class="page-link" href="?page={{ i }}">{{ i }}</a>
+								</li>
+							{% endif %}
+						{% endfor %}
+						<li class="page-item disabled">
+							<a class="page-link" >...</a>
+						</li>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memelysis</title>
+						{% for i in memes.paginator.page_range|slice:"-1:" %}
+							{% if memes.number == i %}
+								<li class="page-item"><a class="page-link">
+									<span>{{ i }}<span class="sr-only">(current)</span></span></a>
+								</li>
+							{% else %}
+								<li class="page-item">
+									<a class="page-link" href="?page={{ i }}">{{ i }}</a>
+								</li>
+							{% endif %}
+						{% endfor %}
 
-    <!-- LATOPRELOAD CSS -->
-    <link rel="stylesheet" href="{% static 'lato/fonts/lato-v14-latin-ext_latin-100.woff2' %}">
-    <link rel="stylesheet" href="{% static 'lato/fonts/lato-v14-latin-ext_latin-300.woff2' %}">
-    <link rel="stylesheet" href="{% static 'lato/fonts/lato-v14-latin-ext_latin-700.woff2' %}">
-    <link rel="stylesheet" href="{% static 'lato/fonts/lato-v14-latin-ext_latin-900.woff2' %}">
-    <link rel="stylesheet" href="{% static 'lato/fonts/lato-v14-latin-ext_latin-italic.woff2' %}">
-    <link rel="stylesheet" href="{% static 'lato/fonts/lato-v14-latin-ext_latin-regular.woff2' %}">
-    <link rel="stylesheet" href="{% static 'lato/fonts/lato-v14-latin-ext_latin-100italic.woff2' %}">
-    <link rel="stylesheet" href="{% static 'lato/fonts/lato-v14-latin-ext_latin-300italic.woff2' %}">
-    <link rel="stylesheet" href="{% static 'lato/fonts/lato-v14-latin-ext_latin-700italic.woff2' %}">
-    <link rel="stylesheet" href="{% static 'lato/fonts/lato-v14-latin-ext_latin-900italic.woff2' %}">
-
-    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-4.1.3/css/bootstrap.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'base/css/base.css' %}" />
-    <!-- LATO CSS -->
-    <link rel="stylesheet" href="{% static 'lato/css/lato.css' %}">
-
-    <script src="{% static 'jquery/js/jquery-3.4.1.min.js' %}"></script>
-    <script src="{% static 'bootstrap-4.1.3/js/bootstrap.js' %}"></script>
-</head>
-<body>
-    <div class="row text-center shadow mb-2 bg-white">
-        <div class="col-6 p-3 border">
-            <a href="">Memes</a>
-        </div>
-        <div class="col-6 p-3 border">
-            <a href="">Analytics</a>
-        </div>
-    </div>
-    <div class="container shadow bg-white">
-        {% for meme in memes %}
-        <div class="row mt-3 p-3 border-bottom">
-            <div class="col-7">
-                <img src="{% static meme.image_path %}" width="100%" class="border" />
-            </div>
-            <div class="col-5" style="display: flex; flex-direction: column;">
-                <div class="row">
-                    <div class="col-12">
-                        <h4>Meme from {{meme.source}} posted at {{meme.meme_datetime}}</h4>
-                    </div>
-                </div>
-                <div class="row" style="flex-grow: 1;">
-                    <div class="col-12" style=" vertical-align: bottom">
-                        <img src="{{meme.image_data}}" style="max-width:100%" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</body>
-</html>
+						{% if memes.has_next %}
+							<li class="page-item">
+								<a class="page-link" href="?page={{ memes.next_page_number }}">&raquo;</a>
+							</li>
+						{% else %}
+							<li class="page-item disabled">
+								<span>&raquo;</span>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+{% endblock content %}

@@ -6,49 +6,49 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    initial = True
+	initial = True
 
-    dependencies = [
-    ]
+	dependencies = [
+	]
 
-    operations = [
-        migrations.CreateModel(
-            name='Memes',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('meme_id', models.CharField(max_length=128, unique=True, verbose_name='ID mema')),
-                ('url', models.CharField(max_length=256, verbose_name='Adres url')),
-                ('image_path', models.CharField(max_length=256, verbose_name='Ścieżka do obrazka')),
-                ('meme_timestamp', models.DateTimeField()),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Sources',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=32, unique=True, verbose_name='Nazwa źródła')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='MemesUpvotesStatistics',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('upvotes', models.IntegerField(verbose_name='')),
-                ('upvotes_centile', models.FloatField(verbose_name='')),
-                ('meme', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='index.Memes')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='MemesClusters',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('cluster', models.CharField(max_length=64)),
-                ('meme', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='index.Memes')),
-            ],
-        ),
-        migrations.AddField(
-            model_name='memes',
-            name='source',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='index.Sources'),
-        ),
-    ]
+	operations = [
+		migrations.CreateModel(
+			name='Memes',
+			fields=[
+				('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+				('meme_id', models.CharField(max_length=128, unique=True, verbose_name='ID mema')),
+				('url', models.CharField(max_length=256, verbose_name='Adres url')),
+				('image_path', models.CharField(max_length=256, verbose_name='Ścieżka do obrazka')),
+				('meme_timestamp', models.DateTimeField()),
+			],
+		),
+		migrations.CreateModel(
+			name='Sources',
+			fields=[
+				('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+				('name', models.CharField(max_length=32, unique=True, verbose_name='Nazwa źródła')),
+			],
+		),
+		migrations.CreateModel(
+			name='MemesUpvotesStatistics',
+			fields=[
+				('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+				('upvotes', models.IntegerField(verbose_name='')),
+				('upvotes_centile', models.FloatField(verbose_name='')),
+				('meme', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='index.Memes')),
+			],
+		),
+		migrations.CreateModel(
+			name='MemesClusters',
+			fields=[
+				('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+				('cluster', models.CharField(max_length=64)),
+				('meme', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='index.Memes')),
+			],
+		),
+		migrations.AddField(
+			model_name='memes',
+			name='source',
+			field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='index.Sources'),
+		),
+	]
