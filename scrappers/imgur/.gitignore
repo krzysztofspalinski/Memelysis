@@ -1,7 +1,0 @@
-credentials.py
-imgur
-imgur*.log
-imgur*.json
-virtualenv
-*.cpython
-*.py[cod]

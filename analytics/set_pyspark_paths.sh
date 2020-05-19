@@ -1,0 +1,2 @@
+export PYSPARK_DRIVER_PYTHON=python3.5
+export PYSPARK_PYTHON=python3.5
