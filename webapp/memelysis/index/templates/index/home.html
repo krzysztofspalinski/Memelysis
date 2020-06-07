@@ -1,30 +1,43 @@
 {% extends "index/base.html" %}
+{% load static %}
+
 {% block content %}
-	{% load static %}
-	<div class="container shadow bg-white">
-		{% for meme, graph in data %}
-		<div class="row mt-3 p-3 border-bottom">
-			<div class="col-6">
-				<img src="{% static meme.image_path %}" width="100%" class="border" />
-			</div>
-			<div class="col-6" style="display: flex; flex-direction: column;">
-				<div class="row">
-					<div class="col-12">
-						<h4>Meme from {{meme.source}}</h4>
-						<h6>Posted at {{meme.meme_datetime}}</h6>
-						<hr>
+	<style>
+		.pagination .page-item.active .page-link{
+			background: #000;
+			border-color: #000;
+			color: #fff;
+		}
+		.pagination .page-link{
+			color: #000;
+		}
+	</style>
+	<div class="container mt-5">
+		{% for meme in memes %}
+		<div class="row border-bottom text-white shadow" style="background:#000">
+			<div class="col-12" style="display: flex; flex-direction: column;">
+				<div class="row p-3">
+					<div class="col-6">
+						<span style="font-weight: bold; font-size: 13pt;">Meme from {{meme.source__name}} {{meme.memesupvotesstatistics__upvotes_centile}}</span>
+					</div>
+					<div class="col-6 text-right">
+						<span>Posted at {{meme.meme_datetime}}</span>
+						<span class="likes" id="likes_{{meme.id}}" style="margin-left:10px; border:1px solid #fff; padding: 3px; cursor: pointer">{{meme.memesupvotesstatistics__upvotes}} <img src="{% static 'index/assets/like-icon.png' %}" style="max-height:1rem" /><div class="graph" style="position: absolute; right: 0; top: 2rem; z-index:1000;"><div class="graph-inner shadow" style="background:#fff; border:1px solid #eee; border-radius: 8px; display:none; padding: 1rem"></div></div></span>
 					</div>
 				</div>
-				<div class="row" style="flex-grow: 1;">
-					{% include "index/graph.html" %}
-				</div>
+			</div>
+		</div>
+		<div class="row border-bottom p-3 mb-5 bg-white shadow">
+			<div class="col-12 text-center">
+				<img src="{% static meme.image_path %}" style="max-width:100%" class="border" />
+				{% comment %} {% include "index/graph.html" %} {% endcomment %}
 			</div>
 		</div>
 		{% endfor %}
 	</div>
-	<div class="container shadow bg-white">
+	<div class="container mb-3">
 		{% if memes.has_other_pages %}
-		<div class="row mt-3 p-3 justify-content-center">
+		<div class="row justify-content-center">
 			<div class="row justify-content-center">
 				<div class="text-xs-center">
 					<ul class="pagination justify-content-center">
@@ -40,7 +53,7 @@
 						{% for i in memes.paginator.page_range %}
 							{% if i < memes.number|add:"-1" %}
 							{% elif memes.number == i %}
-								<li class="page-item"><a class="page-link">
+								<li class="page-item active"><a class="page-link">
 									<span>{{ i }}<span class="sr-only">(current)</span></span></a>
 								</li>
 							{% elif i > memes.number|add:2 %}
@@ -56,7 +69,7 @@
 
 						{% for i in memes.paginator.page_range|slice:"-1:" %}
 							{% if memes.number == i %}
-								<li class="page-item"><a class="page-link">
+								<li class="page-item active"><a class="page-link">
 									<span>{{ i }}<span class="sr-only">(current)</span></span></a>
 								</li>
 							{% else %}
@@ -81,4 +94,20 @@
 		</div>
 		{% endif %}
 	</div>
+<script>
+$('.likes').on('click', function(){
+	var graph = $(this).find('.graph-inner');
+	if(graph.html()){
+		graph.hide();
+		graph.html('');
+	}
+	else{
+		graph.html('<img style="height: 1rem;" src="{% static 'index/assets/loading.gif' %}" />')
+		graph.fadeIn();
+		$.post("/get_graph", {'id': $(this).attr('id'), 'csrfmiddlewaretoken': '{{ csrf_token }}'}, function(data){
+			graph.html(data);
+		});
+	}
+});
+</script>
 {% endblock content %}
