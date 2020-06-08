@@ -1,6 +1,26 @@
 {% extends "index/base.html" %}
 {% load static %}
 
+{% block header %}
+<form action="/sort" method="POST">
+	{% csrf_token %}
+    <select class="form-control" name="sort" id="sort" onchange="this.form.submit()">
+		{% for option, verbose in sorting_options %}
+			<option value="{{option}}" {% if option == request.session.sort %}selected{% endif %}>{{verbose}}</option>
+		{% endfor %}
+    </select>
+</form>
+<form action="/select_category" method="POST">
+	{% csrf_token %}
+    <select class="form-control" name="category" id="category" onchange="this.form.submit()">
+		{% for category in categories %}
+			<option value="{{category}}" {% if category == request.session.category %}selected{% endif %}>{{category}}</option>
+		{% endfor %}
+    </select>
+</form>
+{% endblock %}
+
+
 {% block content %}
 	<style>
 		.pagination .page-item.active .page-link{
@@ -18,11 +38,11 @@
 			<div class="col-12" style="display: flex; flex-direction: column;">
 				<div class="row p-3">
 					<div class="col-6">
-						<span style="font-weight: bold; font-size: 13pt;">Meme from {{meme.source__name}} {{meme.memesupvotesstatistics__upvotes_centile}}</span>
+						<span style="font-weight: bold; font-size: 13pt;">Meme from {{meme.source__name}} #{{meme.memesclusters__cluster}}</span>
 					</div>
 					<div class="col-6 text-right">
 						<span>Posted at {{meme.meme_datetime}}</span>
-						<span class="likes" id="likes_{{meme.id}}" style="margin-left:10px; border:1px solid #fff; padding: 3px; cursor: pointer">{{meme.memesupvotesstatistics__upvotes}} <img src="{% static 'index/assets/like-icon.png' %}" style="max-height:1rem" /><div class="graph" style="position: absolute; right: 0; top: 2rem; z-index:1000;"><div class="graph-inner shadow" style="background:#fff; border:1px solid #eee; border-radius: 8px; display:none; padding: 1rem"></div></div></span>
+						<span class="likes" id="likes_{{meme.id}}" style="margin-left:10px; border:1px solid #fff; padding: 3px; cursor: pointer">{{meme.memesupvotesstatistics__upvotes}} <img src="{% static 'index/assets/like-icon.png' %}" style="max-height:1rem" /> ({{meme.memesupvotesstatistics__upvotes_centile|floatformat:2}})<div class="graph" style="position: absolute; right: 0; top: 2rem; z-index:1000;"><div class="graph-inner shadow" style="background:#fff; border:1px solid #eee; border-radius: 8px; display:none; padding: 1rem"></div></div></span>
 					</div>
 				</div>
 			</div>

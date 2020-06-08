@@ -1,8 +1,8 @@
-from django.shortcuts import render
-from .models import Memes
+from django.shortcuts import render, redirect
+from .models import Memes, MemesClusters
 from .utils import get_distribution_plot
 from django.views.generic import TemplateView
-from django.core.paginator import Paginator, PageNotAnInteger
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
@@ -51,12 +51,17 @@ class Graph(TemplateView):
 
 def index(request):
 
+    sorting = request.session.get('sort', '-meme_datetime')
     page = request.GET.get('page', 1)
 
-    all_memes = Memes.objects.all().order_by('-meme_datetime').values('id', 'image_path', 'source__name', 'meme_datetime',
+    all_memes = Memes.objects.all().order_by(sorting).values('id', 'image_path', 'source__name', 'meme_datetime', 'memesclusters__cluster',
                                                                       'memesupvotesstatistics__upvotes', 'memesupvotesstatistics__upvotes_centile')
 
-    paginator = Paginator(all_memes, 5)
+    filtering = request.session.get('category')
+    if filtering:
+        all_memes = all_memes.filter(memesclusters__cluster=filtering)
+
+    paginator = Paginator(all_memes, 15)
 
     try:
         memes = paginator.page(page)
@@ -65,7 +70,16 @@ def index(request):
     except EmptyPage:
         memes = paginator.page(paginator.num_pages)
 
-    context = {'memes': memes}
+    sorting_options = (
+        ('-meme_datetime', 'Od najnowszego'),
+        ('meme_datetime', 'Od najstarszego'),
+        ('-memesupvotesstatistics__upvotes_centile', 'Od najlepszego'),
+        ('memesupvotesstatistics__upvotes_centile', 'Od najgorszego'),
+    )
+
+    categories = ["Wybierz kategorię"] + list(MemesClusters.objects.values_list('cluster', flat=True).distinct())
+
+    context = {'memes': memes, 'sorting_options': sorting_options, 'categories': categories}
     return render(request, 'index/home.html', context=context)
 
 
@@ -98,6 +112,20 @@ def get_graph(request):
     else:
         return JsonResponse()
 
+def sort(request):
+    if request.method == "POST":
+        request.session['sort'] = request.POST.get('sort', '-meme_datetime')
+    return redirect(request.META.get('HTTP_REFERER'))
+
+def select_category(request):
+    if request.method == "POST":
+        category = request.POST.get('category', '')
+        categories = list(MemesClusters.objects.values_list('cluster', flat=True).distinct())
+        if category in categories:
+            request.session['category'] = category
+        else:
+            request.session.pop('category')
+    return redirect(request.META.get('HTTP_REFERER'))
 
 def about(request):
     return render(request, 'index/about.html')

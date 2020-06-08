@@ -38,9 +38,14 @@
 	font-size: 14pt;
 	outline: 1px;
 }
+form{
+	display: inline-block;
+}
 </style>
-<body style="background: #666">
-	<div style="background: #000; height:60px "></div>
+<body>
+	<div style="background: #000; height:60px; color:#fff; text-align:right; padding: 10px 15px; ">
+	{% block header %}{% endblock %}
+	</div>
 	<div class="bg-white">
 		<img style="margin: 0 auto; display: block; padding-bottom: 50px" width="45%" src="https://storage.googleapis.com/images-and-logs/img/memelysis_logo.png" alt="Memelysis Logo">
 	</div>
