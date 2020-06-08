@@ -2,6 +2,11 @@
 {% load static %}
 
 {% block header %}
+<form action="/select_min_vf" method="POST">
+	{% csrf_token %}
+    <label for="min_vf">MIN VF</label>
+	<input type="range" style="vertical-align: middle" id="min_vf" name="min_vf" min="0" max="100" onchange="this.form.submit()" value="{{min_vf}}">
+</form>
 <form action="/sort" method="POST">
 	{% csrf_token %}
     <select class="form-control" name="sort" id="sort" onchange="this.form.submit()">
@@ -15,6 +20,14 @@
     <select class="form-control" name="category" id="category" onchange="this.form.submit()">
 		{% for category in categories %}
 			<option value="{{category}}" {% if category == request.session.category %}selected{% endif %}>{{category}}</option>
+		{% endfor %}
+    </select>
+</form>
+<form action="/select_source" method="POST">
+	{% csrf_token %}
+    <select class="form-control" name="source" id="source" onchange="this.form.submit()">
+		{% for source in sources %}
+			<option value="{{source}}" {% if source == request.session.source %}selected{% endif %}>{{source}}</option>
 		{% endfor %}
     </select>
 </form>

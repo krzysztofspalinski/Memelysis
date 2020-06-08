@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Memes, MemesClusters
+from .models import Memes, MemesClusters, Sources
 from .utils import get_distribution_plot
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -55,11 +55,19 @@ def index(request):
     page = request.GET.get('page', 1)
 
     all_memes = Memes.objects.all().order_by(sorting).values('id', 'image_path', 'source__name', 'meme_datetime', 'memesclusters__cluster',
-                                                                      'memesupvotesstatistics__upvotes', 'memesupvotesstatistics__upvotes_centile')
+                                                             'memesupvotesstatistics__upvotes', 'memesupvotesstatistics__upvotes_centile')
 
-    filtering = request.session.get('category')
-    if filtering:
-        all_memes = all_memes.filter(memesclusters__cluster=filtering)
+    category = request.session.get('category')
+    if category:
+        all_memes = all_memes.filter(memesclusters__cluster=category)
+
+    source = request.session.get('source')
+    if source:
+        all_memes = all_memes.filter(source__name=source)
+
+    min_vf = request.session.get('min_vf', 0)
+    all_memes = all_memes.filter(
+        memesupvotesstatistics__upvotes_centile__gte=min_vf)
 
     paginator = Paginator(all_memes, 15)
 
@@ -71,15 +79,22 @@ def index(request):
         memes = paginator.page(paginator.num_pages)
 
     sorting_options = (
-        ('-meme_datetime', 'Od najnowszego'),
-        ('meme_datetime', 'Od najstarszego'),
-        ('-memesupvotesstatistics__upvotes_centile', 'Od najlepszego'),
-        ('memesupvotesstatistics__upvotes_centile', 'Od najgorszego'),
+        ('-meme_datetime', 'Newest'),
+        ('meme_datetime', 'Oldest'),
+        ('-memesupvotesstatistics__upvotes_centile', 'Best'),
+        ('memesupvotesstatistics__upvotes_centile', 'Worst'),
     )
 
-    categories = ["Wybierz kategorię"] + list(MemesClusters.objects.values_list('cluster', flat=True).distinct())
+    categories = ["Select category"] + \
+        list(MemesClusters.objects.values_list(
+            'cluster', flat=True).distinct())
 
-    context = {'memes': memes, 'sorting_options': sorting_options, 'categories': categories}
+    sources = ["Select source"] + \
+        list(Sources.objects.values_list(
+            'name', flat=True).distinct())
+
+    context = {'memes': memes, 'sorting_options': sorting_options,
+               'categories': categories, 'min_vf': min_vf * 100, 'sources': sources}
     return render(request, 'index/home.html', context=context)
 
 
@@ -112,20 +127,43 @@ def get_graph(request):
     else:
         return JsonResponse()
 
+
 def sort(request):
     if request.method == "POST":
         request.session['sort'] = request.POST.get('sort', '-meme_datetime')
     return redirect(request.META.get('HTTP_REFERER'))
 
+
 def select_category(request):
     if request.method == "POST":
         category = request.POST.get('category', '')
-        categories = list(MemesClusters.objects.values_list('cluster', flat=True).distinct())
+        categories = list(MemesClusters.objects.values_list(
+            'cluster', flat=True).distinct())
         if category in categories:
             request.session['category'] = category
         else:
             request.session.pop('category')
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+def select_source(request):
+    if request.method == "POST":
+        source = request.POST.get('source', '')
+        sources = list(Sources.objects.values_list(
+            'name', flat=True).distinct())
+        if source in sources:
+            request.session['source'] = source
+        else:
+            request.session.pop('source')
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+def select_min_vf(request):
+    if request.method == "POST":
+        min_vf = float(request.POST.get('min_vf', '')) / 100
+        request.session['min_vf'] = min_vf
+    return redirect(request.META.get('HTTP_REFERER'))
+
 
 def about(request):
     return render(request, 'index/about.html')
