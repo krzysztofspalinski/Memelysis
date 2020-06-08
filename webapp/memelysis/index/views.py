@@ -6,6 +6,22 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
+import requests
+from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
+
+
+import plotly.offline as opy
+import plotly.graph_objs as go
+import numpy as np
+import requests
+import plotly
+import pandas as pd
+
+from plotly.colors import named_colorscales
+import plotly.express as px
+import plotly.io as pio
+pio.templates
+
 
 class Graph(TemplateView):
     template_name = 'graph.html'
