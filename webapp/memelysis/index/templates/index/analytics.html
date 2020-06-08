@@ -4,7 +4,7 @@
 		<div class="row mt-3 p-3 border-bottom">
 			{% for figure in figures %}
 			<div class="col-md-6">	
-				<div class="shadow my-2 p-3">{{figure|safe}}</div>
+				<div class="shadow my-2 p-3">{% include "index/"|add:figure %}</div>
 			</div>
 			{% endfor %} 
 		</div>

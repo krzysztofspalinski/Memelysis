@@ -1,0 +1,4 @@
+cron:
+- description: "create_analytics_plots"
+  url: /api/create_analytics_plots
+  schedule: every 5 mins

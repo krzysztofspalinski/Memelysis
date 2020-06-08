@@ -7,4 +7,5 @@ urlpatterns = [
 	path('memes', memes, name='memes'),
 	path('memes_scores', memes_scores, name='memes-scores'),
 	path('memes_clusters', memes_clusters, name='memes-clusters'),
+	path('create_analytics_plots', create_analytics_plots, name='create-analytics-plots'),
 ]
