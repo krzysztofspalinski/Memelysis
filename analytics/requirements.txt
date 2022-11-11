@@ -4,7 +4,7 @@ docopt==0.6.2
 hdfs==2.5.8
 idna==2.9
 py4j==0.10.7
-pyspark==2.4.5
+pyspark==3.2.2
 requests==2.23.0
 six==1.14.0
 urllib3==1.25.9
